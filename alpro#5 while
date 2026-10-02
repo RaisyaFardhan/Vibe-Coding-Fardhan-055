@@ -1,0 +1,9 @@
+#loop while
+a = int(input("masukan angka/nilai"))
+
+while a >= 5 : 
+    print(a)
+    a /= 5
+   
+
+

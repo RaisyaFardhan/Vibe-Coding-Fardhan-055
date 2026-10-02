@@ -1,0 +1,7 @@
+angka1 = input("berapa angka satu? ") 
+angka2 = input("berapa angka dua? ")
+hasilTambah = int(angka1) + int(angka2)
+
+# print("halo")
+print("angka1 = ", angka1, "angka2 = ", angka2)
+print("hasil penjumlahan = ", hasilTambah)

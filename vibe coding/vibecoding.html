@@ -1,0 +1,3078 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Creative Generator</title>
+
+<style>
+:root {
+  --paper: #edf4ff;
+  --surface: #ffffff;
+  --ink: #172942;
+  --muted: #5e718b;
+  --line: #d4e1f2;
+  --green: #2d66d5;
+  --green-dark: #19479d;
+  --coral: #e8755a;
+  --yellow: #f1bd4f;
+  --blue: #16a2b8;
+  --blue-dark: #0c7d91;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  background: var(--paper);
+  background-image: linear-gradient(145deg, #e7f0ff 0%, #f6f9ff 52%, #e6f4fb 100%);
+  background-attachment: fixed;
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+/* ================= HEADER ================= */
+
+header {
+  width: 100%;
+  border-bottom: 1px solid var(--line);
+  background: rgba(255,255,255,0.95);
+}
+
+.topbar {
+  max-width: 1200px;
+  margin: auto;
+  padding: 18px 25px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+.brand {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.brand span {
+  color: var(--coral);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.status {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.page-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.page-nav-button {
+  min-height: 40px;
+  padding: 0 13px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.page-nav-button.active {
+  border-color: #c9daf5;
+  background: #e5efff;
+  color: var(--green-dark);
+}
+
+/* ================= MAIN ================= */
+
+main {
+  max-width: 1200px;
+  margin: auto;
+  padding: 45px 25px;
+}
+
+.intro {
+  margin-bottom: 35px;
+}
+
+.intro h1 {
+  font-size: 42px;
+  margin-bottom: 10px;
+}
+
+.intro p {
+  color: var(--muted);
+  font-size: 16px;
+}
+
+/* ================= WORKSPACE ================= */
+
+.workspace {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 25px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+}
+
+.card h2 {
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+/* ================= MODE ================= */
+
+.mode-label {
+  display: block;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.mode-switch,
+.style-switch,
+.language-switch {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.mode-button,
+.style-button,
+.language-button {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.mode-button:hover,
+.style-button:hover,
+.language-button:hover {
+  transform: translateY(-1px);
+}
+
+.mode-button.active {
+  background: var(--green);
+  color: white;
+  border-color: var(--green);
+}
+.language-button.active {
+  background: var(--blue);
+  color: white;
+  border-color: var(--blue);
+}
+
+.style-button.active {
+  background: var(--blue);
+  color: white;
+  border-color: var(--blue);
+}
+
+/* ================= INPUT ================= */
+
+.input-label {
+  display: block;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  font-size: 15px;
+  outline: none;
+  margin-bottom: 15px;
+}
+
+.platform-select {
+  width: 100%;
+  padding: 13px;
+  margin-bottom: 18px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: white;
+  color: var(--ink);
+  font: inherit;
+}
+
+.platform-references {
+  margin: -7px 0 16px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.platform-references summary {
+  width: fit-content;
+  cursor: pointer;
+}
+
+.platform-reference-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  padding: 8px 0 0 18px;
+}
+
+.platform-reference-links a {
+  color: var(--green-dark);
+}
+
+.details-input {
+  display: block;
+  width: 100%;
+  min-height: 104px;
+  padding: 13px;
+  margin-bottom: 15px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  font: inherit;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.details-input:focus {
+  border-color: var(--green);
+  outline: 2px solid rgb(45 102 213 / 16%);
+}
+
+.reference-panel {
+  margin: 6px 0 18px;
+  padding: 13px 14px 2px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f1f6ff;
+}
+
+.reference-panel > summary {
+  margin-bottom: 12px;
+  color: var(--green-dark);
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.reference-panel-content { padding-top: 5px; }
+.reference-file-input { padding: 9px; margin-bottom: 10px; background: white; font-size: 13px; }
+.reference-file-list { display: grid; gap: 8px; margin: 2px 0 14px; }
+.reference-file-item { display: flex; align-items: center; gap: 10px; padding: 8px; border: 1px solid var(--line); border-radius: 6px; background: white; }
+.reference-preview { width: 84px; height: 58px; flex: 0 0 auto; border-radius: 4px; background: #e4edff; object-fit: cover; }
+.reference-file-name { flex: 1; overflow-wrap: anywhere; color: var(--ink); font-size: 12px; }
+.reference-remove { width: 32px; height: 32px; flex: 0 0 auto; border: 1px solid var(--line); border-radius: 5px; background: white; color: #a44335; font: inherit; cursor: pointer; }
+.reference-helper { margin: -4px 0 14px; color: var(--muted); font-size: 11px; line-height: 1.5; }
+
+input:focus {
+  border-color: var(--green);
+}
+
+.generate-button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: var(--green);
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.generate-button:hover {
+  transform: translateY(-2px);
+  background: var(--green-dark);
+}
+
+/* ================= RESULT ================= */
+
+.result-box {
+  min-height: 230px;
+  border-radius: 15px;
+  background: #f6f9ff;
+  border: 1px dashed #c5d5ec;
+  padding: 20px;
+  line-height: 1.7;
+  margin-bottom: 15px;
+}
+
+.result-platform {
+  margin: -10px 0 14px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.result-placeholder {
+  color: var(--muted);
+  text-align: center;
+  padding-top: 70px;
+}
+
+.result-text {
+  white-space: pre-wrap;
+  font-size: 16px;
+}
+
+.result-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.copy-button,
+.bookmark-button {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.copy-button {
+  border: none;
+  background: var(--green);
+  color: white;
+}
+
+.bookmark-button {
+  border: 1px solid #e8c76d;
+  background: #fff7dc;
+  color: #70531b;
+}
+
+.copy-button:disabled,
+.bookmark-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ================= BOOKMARK ================= */
+
+.bookmarks {
+  margin-top: 30px;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.04);
+}
+
+.bookmarks-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.bookmarks-header h2 {
+  font-size: 21px;
+}
+
+.bookmark-filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.bookmark-filter {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.bookmark-filter.active {
+  border-bottom-color: var(--blue);
+  color: var(--green-dark);
+}
+
+.bookmark-filter-count {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.bookmark-page-title {
+  margin: 0 0 22px;
+  font-size: 30px;
+}
+
+.editor-page {
+  width: min(1100px, 100%);
+  margin: 0 auto;
+}
+
+.editor-page-header,
+.editor-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.editor-page-header {
+  margin-bottom: 18px;
+}
+
+.editor-page-title {
+  margin: 0;
+  font-size: 28px;
+}
+
+.editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-bottom: 0;
+  border-radius: 8px 8px 0 0;
+  background: #f1f6ff;
+}
+
+.editor-tool,
+.editor-toolbar select {
+  min-width: 38px;
+  min-height: 36px;
+  padding: 0 9px;
+  border: 1px solid #d8ded9;
+  border-radius: 5px;
+  background: white;
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+
+.editor-tool:hover,
+.editor-toolbar select:hover {
+  border-color: var(--green);
+}
+
+.editor-tool[aria-pressed="true"] {
+  border-color: var(--green);
+  background: #e5efff;
+  color: var(--green-dark);
+}
+
+.editor-toolbar select {
+  max-width: 165px;
+  cursor: pointer;
+}
+
+.editor-color-control {
+  display: inline-flex;
+  height: 36px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 7px;
+  border: 1px solid #d8ded9;
+  border-radius: 5px;
+  background: white;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.editor-color-control input {
+  width: 25px;
+  height: 25px;
+  margin: 0;
+  padding: 1px;
+  border: 0;
+  cursor: pointer;
+}
+
+.rich-editor {
+  min-height: 55vh;
+  padding: 26px clamp(18px, 4vw, 42px);
+  border: 1px solid var(--line);
+  border-radius: 0 0 8px 8px;
+  background: white;
+  color: var(--ink);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 17px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  outline: none;
+}
+
+.rich-editor:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 2px rgb(88 179 104 / 12%);
+}
+
+.editor-actions {
+  justify-content: flex-end;
+  margin-top: 14px;
+}
+
+.editor-save-button,
+.editor-cancel-button {
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: white;
+  color: var(--ink);
+  font: inherit;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.editor-save-button {
+  border-color: var(--green);
+  background: var(--green);
+  color: white;
+}
+
+.editor-status {
+  min-height: 20px;
+  margin: 8px 0 0;
+  color: var(--green-dark);
+  font-size: 12px;
+}
+
+.preview-page {
+  width: min(1040px, 100%);
+  margin: 0 auto;
+}
+
+.preview-heading {
+  margin: 0 0 7px;
+  font-size: 28px;
+}
+
+.preview-note {
+  margin: 0 0 22px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.preview-stage {
+  display: grid;
+  min-height: 460px;
+  place-items: center;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background-color: #e8f0ff;
+  background-image: linear-gradient(135deg, rgb(255 255 255 / 55%) 25%, transparent 25%, transparent 50%, rgb(255 255 255 / 55%) 50%, rgb(255 255 255 / 55%) 75%, transparent 75%, transparent);
+  background-size: 20px 20px;
+}
+
+.preview-frame {
+  width: min(100%, 560px);
+  overflow: hidden;
+  border: 1px solid #d4e1f2;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 14px 36px rgb(30 67 126 / 14%);
+  color: #172942;
+}
+
+.preview-frame.linkedin { width: min(100%, 610px); }
+.preview-frame.x-post { width: min(100%, 590px); }
+
+.preview-appbar {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  border-bottom: 1px solid #edf0ed;
+  color: #26312a;
+  font-size: 13px;
+}
+
+.preview-appbar.instagram { min-height: 48px; font-family: Georgia, "Times New Roman", serif; font-size: 18px; font-style: italic; }
+.preview-appbar.facebook { color: #0866ff; font-size: 20px; font-weight: 800; }
+.preview-appbar.linkedin { color: #0a66c2; font-weight: 800; }
+.preview-appbar.x { font-size: 18px; font-weight: 800; }
+.preview-appbar-actions { color: #626d66; font-size: 14px; letter-spacing: 0; }
+
+.preview-post-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border-bottom: 1px solid #edf0ed;
+}
+
+.preview-post-header.x-header { border-bottom: 0; }
+.preview-post-header.linkedin-header { border-bottom: 0; }
+.preview-follow { margin-left: auto; border: 0; background: transparent; color: #0a66c2; font: inherit; font-size: 12px; font-weight: bold; }
+.preview-more { margin-left: auto; color: #5f6861; font-size: 16px; }
+
+.preview-avatar {
+  display: grid;
+  width: 38px;
+  aspect-ratio: 1;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  background: #2d66d5;
+  color: white;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.preview-avatar.facebook { background: #356bd6; }
+.preview-avatar.linkedin { border-radius: 5px; background: #0a66c2; }
+.preview-avatar.x { background: #181818; }
+.preview-avatar.instagram { border: 2px solid #d94d74; background: #f0ad63; }
+
+.preview-account-name { font-size: 13px; font-weight: bold; }
+.preview-account-meta { margin-top: 3px; color: #6b756e; font-size: 11px; }
+
+.preview-art {
+  position: relative;
+  display: flex;
+  min-height: 270px;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  padding: 28px;
+  background: #dce9ff;
+  color: #1d3e73;
+}
+
+.preview-art::before,
+.preview-art::after {
+  position: absolute;
+  width: 34%;
+  height: 140%;
+  top: -18%;
+  right: 14%;
+  border: 1px solid rgb(33 80 153 / 28%);
+  content: "";
+  transform: rotate(27deg);
+}
+
+.preview-art::after {
+  right: 4%;
+  border-width: 12px;
+  opacity: 0.38;
+}
+
+.preview-art.instagram { background: #e5eaff; color: #334278; }
+.preview-art.facebook { min-height: 225px; background: #dce9ff; color: #1e467d; }
+.preview-art.linkedin { min-height: 205px; background: #d9edff; color: #173d63; }
+.preview-art.x { min-height: 170px; background: #e3ebf7; color: #202e43; }
+
+.preview-art-label,
+.preview-art-theme,
+.preview-art-footer {
+  position: relative;
+  z-index: 1;
+}
+
+.preview-art-label {
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.preview-art-theme {
+  max-width: 80%;
+  margin: 20px 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.08;
+  overflow-wrap: anywhere;
+}
+
+.preview-art-footer { font-size: 12px; }
+
+.preview-post-copy {
+  max-height: 320px;
+  overflow: auto;
+  padding: 16px;
+  font-size: 13px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.preview-post-copy p { margin: 0; }
+.preview-frame.instagram .preview-post-copy { max-height: 175px; margin-top: 0; padding-top: 4px; }
+.preview-engagement { padding: 8px 16px; color: #5e6961; font-size: 11px; }
+.preview-actions-row { display: flex; justify-content: space-between; gap: 12px; padding: 10px 16px; border-top: 1px solid #edf0ed; color: #59645d; font-size: 12px; }
+.preview-reaction-row { display: flex; justify-content: space-around; padding: 10px 8px; border-top: 1px solid #edf0ed; color: #68736c; font-size: 12px; }
+.preview-frame.facebook .preview-post-copy { max-height: 210px; }
+.preview-frame.linkedin .preview-post-copy { max-height: 230px; }
+.preview-frame.x-post .preview-post-copy { max-height: 210px; padding-top: 4px; }
+
+.preview-slogan-card {
+  display: grid;
+  width: min(100%, 560px);
+  min-height: 320px;
+  align-content: center;
+  gap: 22px;
+  padding: clamp(26px, 6vw, 58px);
+  border: 1px solid #c8daf5;
+  border-radius: 8px;
+  background: #dce9ff;
+  color: #1d3e73;
+  box-shadow: 0 14px 36px rgb(30 67 126 / 14%);
+}
+
+.preview-slogan-kicker { color: #4269a8; font-size: 11px; font-weight: bold; text-transform: uppercase; }
+.preview-slogan-theme { margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: 28px; line-height: 1.1; }
+.preview-slogan-copy { margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: 22px; font-weight: bold; line-height: 1.5; white-space: pre-wrap; }
+
+.preview-message {
+  width: min(100%, 460px);
+  min-height: 360px;
+  padding: 16px;
+  border: 1px solid #cbdcf1;
+  border-radius: 12px;
+  background: #eef5ff;
+  box-shadow: 0 14px 36px rgb(30 67 126 / 14%);
+}
+
+.preview-message-header { padding: 2px 0 14px; border-bottom: 1px solid #dfe6e0; font-size: 13px; font-weight: bold; }
+.preview-message-bubble { max-height: 420px; overflow: auto; margin-top: 18px; padding: 16px; border: 1px solid #e2e7e2; border-radius: 5px 14px 14px; background: white; font-size: 13px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; }
+.preview-disclaimer { margin: 14px 0 0; color: var(--muted); font-size: 12px; }
+
+#bookmark-count {
+  background: #f1f5f9;
+  color: var(--muted);
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.bookmark-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.bookmark-item {
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  padding: 18px;
+  background: #fffdf8;
+}
+
+.bookmark-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.bookmark-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.bookmark-tag {
+  font-size: 11px;
+  padding: 5px 9px;
+  border-radius: 20px;
+  background: #eef2ff;
+  color: #4655a6;
+}
+
+.bookmark-theme {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.bookmark-content {
+  line-height: 1.6;
+  color: #444;
+  white-space: pre-wrap;
+  margin-bottom: 15px;
+}
+
+.bookmark-references {
+  display: grid;
+  gap: 5px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+}
+
+.bookmark-references strong { color: var(--muted); }
+.bookmark-references a { width: fit-content; color: var(--green-dark); overflow-wrap: anywhere; }
+.bookmark-references span { color: var(--muted); overflow-wrap: anywhere; }
+
+.delete-bookmark {
+  border: none;
+  background: #ffe4e0;
+  color: #b52f20;
+  padding: 8px 12px;
+  border-radius: 9px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.delete-bookmark:hover {
+  background: #ffcfc8;
+}
+
+.bookmark-empty {
+  text-align: center;
+  padding: 35px;
+  color: var(--muted);
+  border: 1px dashed var(--line);
+  border-radius: 15px;
+}
+
+/* ================= FOOTER ================= */
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  padding: 30px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 800px) {
+
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .intro h1 {
+    font-size: 32px;
+  }
+
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-right {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 500px) {
+
+  main {
+    padding: 30px 15px;
+  }
+
+  .card,
+  .bookmarks {
+    padding: 18px;
+  }
+
+  .result-actions {
+    flex-direction: column;
+  }
+
+  .bookmarks-header {
+    align-items: flex-start;
+    gap: 10px;
+    flex-direction: column;
+  }
+
+  .header-right {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .page-nav {
+    width: 100%;
+  }
+
+  .page-nav-button {
+    flex: 1;
+    padding-inline: 6px;
+    font-size: 11px;
+  }
+
+  .bookmark-filters {
+    gap: 2px;
+  }
+
+  .bookmark-filter {
+    flex: 1;
+    justify-content: center;
+    padding-inline: 5px;
+  }
+}
+</style>
+</head>
+
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<header>
+
+  <div class="topbar">
+
+    <div class="brand">✦ Creative <span>Generator</span></div>
+    <nav class="page-nav" aria-label="Halaman">
+      <button class="page-nav-button active" id="generator-nav" data-page="generator" type="button" aria-pressed="true">Generator</button>
+      <button class="page-nav-button" id="editor-nav" data-page="editor" type="button" aria-pressed="false" disabled>Editor</button>
+      <button class="page-nav-button" id="preview-nav" data-page="preview" type="button" aria-pressed="false" disabled>Pratinjau</button>
+      <button class="page-nav-button" id="bookmarks-nav" data-page="bookmarks" type="button" aria-pressed="false">🔖 Bookmark</button>
+    </nav>
+    <div class="header-right">
+      <div class="status" id="header-status">● Berjalan di perangkat ini</div>
+    </div>
+  </div>
+
+</header>
+
+
+<!-- ================= MAIN ================= -->
+
+<main id="generator-page">
+  <section class="intro">
+    <h1 id="intro-title">Ruang ide kecilmu.</h1>
+    <p id="intro-description">Buat caption, tagline, atau pesan broadcast dari sebuah tema.</p>
+  </section>
+
+  <section class="workspace">
+    <div class="card">
+      <h2 id="generator-title">Mulai membuat</h2>
+
+      <span class="mode-label" id="mode-label">Pilih jenis tulisan</span>
+      <div class="mode-switch" role="group" aria-labelledby="mode-label">
+        <button class="mode-button active" data-mode="caption" type="button">Caption</button>
+        <button class="mode-button" data-mode="tagline" type="button">Tagline</button>
+        <button class="mode-button" data-mode="broadcast" type="button">Broadcast</button>
+      </div>
+
+      <span class="mode-label" id="style-label">Pilih gaya tulisan</span>
+      <div class="style-switch" role="group" aria-labelledby="style-label">
+        <button class="style-button active" data-style="formal" type="button">Formal</button>
+        <button class="style-button" data-style="nonformal" type="button">Non-formal</button>
+      </div>
+
+      <span class="mode-label" id="language-label">Pilih bahasa</span>
+      <div class="language-switch" role="group" aria-labelledby="language-label">
+        <button class="language-button active" data-language="id" type="button">Bahasa Indonesia</button>
+        <button class="language-button" data-language="en" type="button">English</button>
+      </div>
+
+      <div id="platform-controls">
+        <label class="input-label" for="platform" id="platform-label">Pilih platform</label>
+        <select class="platform-select" id="platform">
+          <option value="instagram">Instagram</option>
+          <option value="facebook">Facebook</option>
+          <option value="linkedin">LinkedIn</option>
+          <option value="x">X</option>
+        </select>
+        <details class="platform-references">
+          <summary id="platform-references-title">Referensi resmi</summary>
+          <div class="platform-reference-links">
+            <a href="https://developers.facebook.com/docs/instagram-platform/instagram-graph-api/reference/ig-user/media/" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <a href="https://www.facebook.com/business/help" target="_blank" rel="noopener noreferrer">Facebook</a>
+            <a href="https://www.linkedin.com/help/linkedin/answer/a528176/post-and-share-updates" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a href="https://help.x.com/en/using-x/how-to-post" target="_blank" rel="noopener noreferrer">X</a>
+            <a href="https://docs.x.com/fundamentals/counting-characters" target="_blank" rel="noopener noreferrer">X: hitung karakter</a>
+          </div>
+        </details>
+      </div>
+
+      <form id="generator-form">
+        <label class="input-label" for="theme" id="theme-label">Masukkan tema</label>
+        <input type="text" id="theme" maxlength="80" placeholder="Contoh: kopi pagi, teknologi, pendidikan..." required>
+        <div id="details-controls">
+          <label class="input-label" for="details" id="details-label">Detail tambahan (opsional)</label>
+          <textarea class="details-input" id="details" maxlength="600" rows="4" placeholder="Contoh: target audiens, manfaat utama, ajakan, atau suasana yang diinginkan."></textarea>
+        </div>
+        <details class="reference-panel">
+          <summary id="reference-panel-label">Referensi sumber (opsional)</summary>
+          <div class="reference-panel-content">
+            <label class="input-label" for="reference-links" id="reference-links-label">Link postingan atau sumber (satu link per baris)</label>
+            <textarea class="details-input" id="reference-links" maxlength="2000" rows="3" placeholder="https://..."></textarea>
+            <div class="reference-link-list" id="reference-link-list"></div>
+            <p class="reference-warning" id="reference-link-status" role="status" aria-live="polite"></p>
+
+            <label class="input-label" for="reference-files" id="reference-files-label">Gambar, video, poster, atau template</label>
+            <input class="reference-file-input" type="file" id="reference-files" accept="image/*,video/*" multiple>
+            <div class="reference-file-list" id="reference-file-list"></div>
+
+            <label class="input-label" for="reference-notes" id="reference-notes-label">Poin penting dari referensi</label>
+            <textarea class="details-input" id="reference-notes" maxlength="600" rows="3" placeholder="Ringkas audiens, manfaat, suasana, atau ajakan yang ingin dijadikan arahan."></textarea>
+            <p class="reference-helper" id="reference-helper">Tautan dan media tidak dibaca otomatis. Ringkas poin penting di sini agar dipakai sebagai arahan; isi ringkasan tidak akan disalin mentah ke hasil.</p>
+          </div>
+        </details>
+        <button class="generate-button" type="submit">✨ Buat Caption Formal</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2 id="result-heading">Hasil tulisan</h2>
+      <p class="result-platform" id="result-platform" aria-live="polite" hidden></p>
+      <div class="result-box" id="result-box">
+        <div class="result-placeholder" id="result-placeholder">Hasil tulisan akan muncul di sini.</div>
+      </div>
+      <div class="result-actions">
+        <button class="copy-button" id="edit-button" type="button" disabled>✎ Edit</button>
+        <button class="bookmark-button" id="bookmark-button" type="button" disabled>☆ Bookmark</button>
+        <button class="copy-button" id="copy-button" type="button" disabled>▢ Salin</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<main id="preview-page" hidden>
+  <section class="preview-page">
+    <h1 class="preview-heading" id="preview-heading">Pratinjau visual</h1>
+    <p class="preview-note" id="preview-note">Contoh tampilan sebelum dipublikasikan. Pratinjau ini tidak terhubung ke platform mana pun.</p>
+    <div class="preview-stage" id="preview-stage" aria-live="polite"></div>
+    <p class="preview-disclaimer" id="preview-disclaimer">Tampilan ini adalah mockup sederhana; desain akhir dapat berbeda di aplikasi/platform.</p>
+  </section>
+</main>
+
+<main id="editor-page" hidden>
+  <section class="editor-page">
+    <div class="editor-page-header">
+      <h1 class="editor-page-title" id="editor-page-title">Edit tulisan</h1>
+      <button class="editor-save-button" id="editor-save-top" type="button">Simpan perubahan</button>
+    </div>
+
+    <div class="editor-toolbar" id="editor-toolbar" role="toolbar" aria-label="Pemformatan teks">
+      <button class="editor-tool" type="button" data-editor-command="undo" title="Undo" aria-label="Undo">↶</button>
+      <button class="editor-tool" type="button" data-editor-command="redo" title="Redo" aria-label="Redo">↷</button>
+      <select data-editor-command="fontName" aria-label="Jenis tulisan">
+        <option value="Georgia">Georgia</option>
+        <option value="Arial">Arial</option>
+        <option value="Times New Roman">Times New Roman</option>
+        <option value="Verdana">Verdana</option>
+        <option value="Trebuchet MS">Trebuchet MS</option>
+        <option value="Courier New">Courier New</option>
+      </select>
+      <select data-editor-command="fontSize" aria-label="Ukuran tulisan">
+        <option value="2">10 px</option>
+        <option value="3" selected>16 px</option>
+        <option value="4">18 px</option>
+        <option value="5">24 px</option>
+        <option value="6">32 px</option>
+        <option value="7">48 px</option>
+      </select>
+      <select data-editor-command="formatBlock" aria-label="Gaya paragraf">
+        <option value="p">Paragraf</option>
+        <option value="h2">Judul</option>
+        <option value="h3">Subjudul</option>
+        <option value="blockquote">Kutipan</option>
+      </select>
+      <button class="editor-tool" type="button" data-editor-command="bold" title="Bold" aria-label="Bold"><strong>B</strong></button>
+      <button class="editor-tool" type="button" data-editor-command="italic" title="Italic" aria-label="Italic"><em>I</em></button>
+      <button class="editor-tool" type="button" data-editor-command="underline" title="Underline" aria-label="Underline"><u>U</u></button>
+      <button class="editor-tool" type="button" data-editor-command="strikeThrough" title="Coret" aria-label="Coret"><s>S</s></button>
+      <button class="editor-tool" type="button" data-editor-command="justifyLeft" title="Rata kiri" aria-label="Rata kiri">☰</button>
+      <button class="editor-tool" type="button" data-editor-command="justifyCenter" title="Rata tengah" aria-label="Rata tengah">≡</button>
+      <button class="editor-tool" type="button" data-editor-command="justifyRight" title="Rata kanan" aria-label="Rata kanan">☷</button>
+      <button class="editor-tool" type="button" data-editor-command="insertUnorderedList" title="Daftar berpoin" aria-label="Daftar berpoin">•≡</button>
+      <button class="editor-tool" type="button" data-editor-command="insertOrderedList" title="Daftar bernomor" aria-label="Daftar bernomor">1≡</button>
+      <label class="editor-color-control">Warna <input type="color" data-editor-command="foreColor" value="#242124" aria-label="Warna tulisan"></label>
+      <label class="editor-color-control">Sorot <input type="color" data-editor-command="hiliteColor" value="#fff0a6" aria-label="Warna sorotan"></label>
+      <button class="editor-tool" type="button" data-editor-command="removeFormat" title="Hapus format" aria-label="Hapus format">Tx</button>
+    </div>
+
+    <div class="rich-editor" id="rich-editor" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="true"></div>
+    <p class="editor-status" id="editor-status" role="status" aria-live="polite"></p>
+    <div class="editor-actions">
+      <button class="editor-cancel-button" id="editor-cancel" type="button">Batal</button>
+      <button class="editor-save-button" id="editor-save" type="button">Simpan perubahan</button>
+    </div>
+  </section>
+</main>
+
+<main id="bookmarks-page" hidden>
+  <section class="bookmarks">
+    <h1 class="bookmark-page-title" id="bookmarks-page-title">🔖 Bookmark tersimpan</h1>
+    <div class="bookmark-filters" role="group" aria-labelledby="bookmark-filter-label">
+      <span class="mode-label" id="bookmark-filter-label" hidden>Pisahkan bookmark berdasarkan jenis</span>
+      <button class="bookmark-filter active" data-bookmark-filter="caption" type="button" aria-pressed="true">
+        Caption <span class="bookmark-filter-count" id="bookmark-count-caption">0</span>
+      </button>
+      <button class="bookmark-filter" data-bookmark-filter="tagline" type="button" aria-pressed="false">
+        Tagline <span class="bookmark-filter-count" id="bookmark-count-tagline">0</span>
+      </button>
+      <button class="bookmark-filter" data-bookmark-filter="broadcast" type="button" aria-pressed="false">
+        Broadcast <span class="bookmark-filter-count" id="bookmark-count-broadcast">0</span>
+      </button>
+    </div>
+    <div class="bookmarks-header">
+      <h2 id="bookmark-filter-title">Caption</h2>
+      <span id="bookmark-count">0 pilihan</span>
+    </div>
+    <div class="bookmark-list" id="bookmark-list">
+      <div class="bookmark-empty" id="bookmark-empty">Belum ada tulisan yang disimpan.</div>
+    </div>
+  </section>
+</main>
+
+<footer id="page-footer">Creative Generator — buat ide, simpan, dan gunakan kembali.</footer>
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+/* ==========================================
+   VARIABLE
+========================================== */
+
+let mode = "caption";
+
+let writingStyle = "formal";
+
+let language = "id";
+
+let currentResult = "";
+
+let currentResultMarkup = "";
+
+let savedEditorRange = null;
+
+let currentTheme = "";
+
+let currentDetails = "";
+
+let currentReferenceLinks = [];
+
+let currentReferenceFiles = [];
+
+let referenceFiles = [];
+
+let currentResultPlatform = "";
+
+let currentResultMode = "caption";
+
+let currentResultStyle = "formal";
+
+let currentResultLanguage = "id";
+
+let bookmarkFilter = "caption";
+
+
+/* ==========================================
+   CAPTION FORMAL
+========================================== */
+
+const captionFormalOpeners = [
+
+  "Dalam kehidupan sehari-hari,",
+
+  "Di tengah perkembangan zaman,",
+
+  "Setiap langkah memiliki makna.",
+
+  "Perubahan dimulai dari sebuah langkah.",
+
+  "Sebuah ide dapat menjadi awal dari sesuatu yang berarti."
+
+];
+
+
+const captionFormalBodies = [
+
+  theme =>
+    `membahas ${theme} menjadi salah satu cara untuk memahami bagaimana hal sederhana dapat memberikan dampak yang berarti. Dengan konsistensi dan perhatian terhadap proses, setiap usaha dapat berkembang menjadi sesuatu yang lebih baik.`,
+
+  theme =>
+    `tema ${theme} mengingatkan kita bahwa setiap proses membutuhkan ketekunan. Tidak semua hasil dapat diperoleh secara instan, tetapi setiap langkah yang dilakukan dengan baik memiliki nilai tersendiri.`,
+
+  theme =>
+    `mengembangkan pemahaman mengenai ${theme} dapat membuka kesempatan untuk melihat berbagai hal dari sudut pandang yang lebih luas. Hal tersebut dapat menjadi bagian dari proses belajar dan berkembang.`,
+
+  theme =>
+    `${theme} bukan hanya sekadar sebuah tema, tetapi juga dapat menjadi kesempatan untuk menciptakan sesuatu yang bermanfaat. Dengan perencanaan dan konsistensi, sebuah gagasan dapat diwujudkan menjadi tindakan nyata.`
+
+];
+
+
+const captionFormalClosers = [
+
+  "Mari terus belajar, berkembang, dan menciptakan sesuatu yang memiliki nilai.",
+
+  "Karena perubahan besar sering kali dimulai dari langkah yang sederhana.",
+
+  "Tetap konsisten dalam proses dan terus berusaha memberikan yang terbaik.",
+
+  "Setiap proses memiliki pelajarannya sendiri."
+
+];
+
+
+/* ==========================================
+   CAPTION NON FORMAL
+========================================== */
+
+const captionNonFormalOpeners = [
+
+  "Kadang,",
+
+  "Ternyata,",
+
+  "Kalau dipikir-pikir,",
+
+  "Hari ini jadi pengingat kalau",
+
+  "Satu hal yang aku pelajari adalah"
+
+];
+
+
+const captionNonFormalBodies = [
+
+  theme =>
+    `${theme} ternyata bisa jadi sesuatu yang seru kalau kita mau melihatnya dari sisi yang berbeda. Nggak harus langsung sempurna, yang penting mulai dulu dan nikmati prosesnya.`,
+
+  theme =>
+    `ngomongin ${theme}, rasanya selalu ada hal baru yang bisa ditemukan. Kadang sederhana, tapi justru dari hal kecil seperti itu kita bisa mendapatkan pengalaman yang berharga.`,
+
+  theme =>
+    `${theme} mungkin kelihatannya sederhana, tapi ternyata banyak hal menarik di baliknya. Jadi, daripada terlalu banyak mikir, lebih baik mulai dan lihat ke mana prosesnya membawa kita.`,
+
+  theme =>
+    `belajar tentang ${theme} bikin kita sadar kalau proses itu memang nggak selalu mudah. Ada naik turunnya, tapi semuanya tetap punya cerita sendiri.`
+
+];
+
+
+const captionNonFormalClosers = [
+
+  "Yang penting jalan dulu, nanti sisanya mengikuti. ✨",
+
+  "Pelan-pelan saja, yang penting tetap bergerak. 🚀",
+
+  "Nggak harus sempurna, cukup terus berkembang. 🌱",
+
+  "Nikmati prosesnya dan jangan lupa bersyukur. 🤍",
+
+  "Satu langkah kecil tetap berarti. 💫"
+
+];
+
+
+/* ==========================================
+   TAGLINE FORMAL
+========================================== */
+
+const taglineFormalTemplates = [
+  theme => `✦ ${theme}: langkah kecil hari ini 🌱; dampak bermakna esok.`,
+  theme => `🌟 ${theme}: berani melangkah ✨, konsisten bertumbuh.`,
+  theme => `💡 ${theme}: wujudkan gagasan 🌟; nyalakan perubahan.`,
+  theme => `🌱 ${theme}: tanam tujuan ✨, tuai kemajuan.`,
+  theme => `🚀 ${theme}: fokus 💫, bergerak, berikan arti.`
+];
+
+
+/* ==========================================
+   TAGLINE NON FORMAL
+========================================== */
+
+const taglineNonFormalTemplates = [
+  theme => `✨ ${theme}: yuk mulai 🚀; kejutan baik menanti!`,
+  theme => `🚀 ${theme}: berani coba ✨, siap bersinar!`,
+  theme => `💫 ${theme}: langkah kecilmu 🌱; cerita besarmu!`,
+  theme => `🌱 ${theme}: tanam ide 💡, panen inspirasi!`,
+  theme => `⚡ ${theme}: siap bikin perubahan ✨ hari ini?`
+];
+
+
+const englishCaptionFormalOpeners = [
+  "Every meaningful idea begins with a thoughtful step.",
+  "In a changing world, each experience can offer a new perspective.",
+  "Progress is built through intention, patience, and purpose."
+];
+
+const englishCaptionFormalBodies = [
+  theme => `Exploring ${theme} can help us understand how thoughtful actions create lasting value. With care and consistency, each effort can grow into something meaningful.`,
+  theme => `The subject of ${theme} reminds us that progress takes patience. Every considered step contributes to a stronger and more rewarding outcome.`,
+  theme => `${theme} offers an opportunity to learn, grow, and see new possibilities. With a clear purpose, an idea can become a meaningful contribution.`
+];
+
+const englishCaptionFormalClosers = [
+  "Let us keep learning, growing, and creating with purpose.",
+  "Great change often begins with one thoughtful step.",
+  "Stay committed to the process and continue doing your best."
+];
+
+const englishCaptionInformalOpeners = [
+  "Sometimes,",
+  "Here's the thing:",
+  "A little reminder that",
+  "Today feels like a good day to remember that"
+];
+
+const englishCaptionInformalBodies = [
+  theme => `${theme} can be more fun when we look at it from a fresh angle. It doesn't have to be perfect; just start and enjoy the ride.`,
+  theme => `There's always something new to discover about ${theme}. Small moments can turn into the best stories.`,
+  theme => `${theme} may seem simple, but there's so much more to it. Take the first step and see where it leads.`,
+  theme => `Learning about ${theme} isn't always easy, but every up and down has a story of its own.`
+];
+
+const englishCaptionInformalClosers = [
+  "Just keep moving; the rest will follow. ✨",
+  "Take it one step at a time. 🚀",
+  "It doesn't have to be perfect. Keep growing. 🌱",
+  "Enjoy the process and celebrate the little things. 🤍"
+];
+
+const englishTaglineFormalTemplates = [
+  theme => `✦ ${theme}: Small steps today 🌱; lasting impact tomorrow.`,
+  theme => `🌟 ${theme}: Lead with purpose ✨; inspire what comes next.`,
+  theme => `💡 ${theme}: Turn today's idea 🌱 into tomorrow's progress.`,
+  theme => `🌱 ${theme}: Grow with intention ✨; make every move matter.`,
+  theme => `🚀 ${theme}: Build with purpose 💫; leave a meaningful mark.`
+];
+
+const englishTaglineInformalTemplates = [
+  theme => `✨ ${theme}: Ready to make your move 🚀?`,
+  theme => `🚀 ${theme}: Start small 🌱; dream big!`,
+  theme => `💫 ${theme}: Your next big thing starts ✨ here!`,
+  theme => `🌱 ${theme}: Plant an idea 💡; watch it grow!`,
+  theme => `⚡ ${theme}: Let's make something awesome ✨ happen!`
+];
+
+
+/* ==========================================
+   RANDOM
+========================================== */
+
+function pick(array) {
+
+  return array[
+    Math.floor(
+      Math.random() * array.length
+    )
+  ];
+
+}
+
+
+function insertEmojiAtMiddle(text, emoji) {
+  const midpoint = Math.floor(text.length / 2);
+  const splitAt = text.indexOf(" ", midpoint);
+  if (splitAt <= 0) {
+    return `${text} ${emoji}`;
+  }
+  return `${text.slice(0, splitAt)} ${emoji}${text.slice(splitAt)}`;
+}
+
+
+/* ==========================================
+   GENERATE CAPTION
+========================================== */
+
+function inferDetailCues(details) {
+  const normalized = details.toLocaleLowerCase(language === "en" ? "en" : "id");
+  const cues = [];
+  if (/(audiens|audience|target|siswa|remaja|mahasiswa|orang tua|pelanggan|customers?)/.test(normalized)) {
+    cues.push("audience");
+  }
+  if (/(manfaat|benefit|dampak|impact|keuntungan|hasil|polusi|reduce|improv|health|kualitas|quality)/.test(normalized)) {
+    cues.push("benefit");
+  }
+  if (/(ajak|ajakan|call to action|\bcta\b|mulai|coba|daftar|follow|reply|hubungi|langkah|action|start|try|share)/.test(normalized)) {
+    cues.push("action");
+  }
+  if (/(suasana|mood|nuansa|hangat|ceria|serius|semangat|fun|warm|friendly|energetic|tone|vibe)/.test(normalized)) {
+    cues.push("mood");
+  }
+  return cues.length ? cues.slice(0, 3) : ["general"];
+}
+
+
+function getDetailGuidance(theme, style, details) {
+  if (!details) {
+    return "";
+  }
+
+  const guidance = language === "en"
+    ? {
+      formal: {
+        audience: `Relate ${theme} to the needs of its intended readers.`,
+        benefit: `Emphasize the practical value and positive impact of ${theme}.`,
+        action: "Point readers toward one clear, achievable next step.",
+        mood: "Keep the message welcoming, confident, and uplifting.",
+        general: `Focus on the real-life relevance of ${theme}.`
+      },
+      nonformal: {
+        audience: `Make ${theme} feel close to the everyday lives of its readers.`,
+        benefit: `Show the useful side of ${theme} and why it matters.`,
+        action: "Invite readers to try one small step today.",
+        mood: "Keep the vibe warm, lively, and easy to join.",
+        general: `Bring out the everyday side of ${theme}.`
+      }
+    }
+    : {
+      formal: {
+        audience: `Hubungkan ${theme} dengan kebutuhan pembaca yang dituju.`,
+        benefit: `Soroti manfaat nyata ${theme} dan dampak positifnya.`,
+        action: "Arahkan pembaca pada satu langkah berikutnya yang jelas dan praktis.",
+        mood: "Bangun kesan yang hangat, yakin, dan memberi semangat.",
+        general: `Angkat sisi ${theme} yang relevan dengan kehidupan sehari-hari.`
+      },
+      nonformal: {
+        audience: `Bikin ${theme} terasa dekat sama keseharian pembaca yang dituju.`,
+        benefit: `Tunjukkan sisi seru dan manfaat nyata dari ${theme}.`,
+        action: "Ajak pembaca mulai dari satu langkah kecil hari ini.",
+        mood: "Jaga suasananya tetap hangat, ringan, dan bikin orang ingin ikut.",
+        general: `Angkat sisi ${theme} yang paling dekat dengan keseharian.`
+      }
+    };
+
+  return inferDetailCues(details)
+    .map(cue => guidance[style][cue])
+    .join(" ");
+}
+
+
+function splitXUnits(text) {
+  const units = [];
+  const urlPattern = /https?:\/\/[^\s]+/giu;
+  const segmentText = value => {
+    if (typeof Intl.Segmenter === "function") {
+      return [...new Intl.Segmenter(undefined, { granularity: "grapheme" }).segment(value)].map(item => item.segment);
+    }
+    return Array.from(value);
+  };
+  let lastIndex = 0;
+  let match;
+  while ((match = urlPattern.exec(text)) !== null) {
+    units.push(...segmentText(text.slice(lastIndex, match.index)));
+    units.push(match[0]);
+    lastIndex = urlPattern.lastIndex;
+  }
+  units.push(...segmentText(text.slice(lastIndex)));
+  return units;
+}
+
+
+function getXUnitWeight(unit) {
+  if (/^https?:\/\//i.test(unit)) {
+    return 23;
+  }
+  if (/[\p{Extended_Pictographic}\p{Regional_Indicator}]/u.test(unit)) {
+    return 2;
+  }
+  if (/[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\u3040-\u30ff\u31f0-\u31ff\uac00-\ud7af]/u.test(unit)) {
+    return 2;
+  }
+  return /^[\u0000-\u00ff]+$/u.test(unit) ? 1 : 2;
+}
+
+
+function getXWeightedLength(text) {
+  return splitXUnits(text.normalize("NFC"))
+    .reduce((total, unit) => total + getXUnitWeight(unit), 0);
+}
+
+
+function limitXPost(text, limit = 280) {
+  const units = splitXUnits(text.normalize("NFC"));
+  let output = "";
+  let weightedLength = 0;
+  let truncated = false;
+  for (const unit of units) {
+    const weight = getXUnitWeight(unit);
+    if (weightedLength + weight > limit - 2) {
+      truncated = true;
+      break;
+    }
+    output += unit;
+    weightedLength += weight;
+  }
+  if (truncated) {
+    output = `${output.trimEnd()}…`;
+  }
+  return output;
+}
+
+
+function limitCharacters(text, limit) {
+  const characters = Array.from(text);
+  return characters.length <= limit
+    ? text
+    : `${characters.slice(0, limit - 1).join("").trimEnd()}…`;
+}
+
+
+function appendXDetails(text, details) {
+  if (!details) {
+    return limitXPost(text);
+  }
+
+  const cue = inferDetailCues(details)[0];
+  const additions = language === "en"
+    ? {
+      audience: " — make it matter to your community",
+      benefit: " — focus on the positive impact",
+      action: " — take one practical step",
+      mood: " — bring your energy to it",
+      general: " — keep it useful and real"
+    }
+    : {
+      audience: " — dekatkan dengan kebutuhan pembaca",
+      benefit: " — soroti dampak positifnya",
+      action: " — mulai dari satu langkah nyata",
+      mood: " — bawa semangat positif",
+      general: " — buat tetap relevan dan nyata"
+    };
+  return limitXPost(`${text}${additions[cue]}`);
+}
+
+
+function formatForPlatform(text, theme, style, platform, contentMode, details) {
+  const english = language === "en";
+  const hashtagTheme = theme.trim().replace(/\s+/g, "");
+
+  if (platform === "instagram") {
+    const hashtags = english
+      ? `#${hashtagTheme} #CreativeIdeas #DailyInspiration`
+      : `#${hashtagTheme} #IdeKreatif #InspirasiHariIni`;
+    return limitCharacters(`${text}\n\n${hashtags}`, 2200);
+  }
+
+  if (platform === "facebook") {
+    if (contentMode === "caption") {
+      return text;
+    }
+    const prompt = english
+      ? "Tag someone who would love this idea!"
+      : "Tag teman yang mungkin menyukai ide ini!";
+    return `${text}\n\n${prompt}`;
+  }
+
+  if (platform === "linkedin") {
+    const closing = english
+      ? (style === "formal" ? "A valuable reminder: meaningful progress takes consistency and collaboration." : "What is one practical step you would take to move this idea forward?")
+      : (style === "formal" ? "Pengingat penting: kemajuan yang berarti membutuhkan konsistensi dan kolaborasi." : "Menurut Anda, langkah praktis apa yang dapat membawa ide ini ke tahap berikutnya?");
+    const hashtags = english ? "#ProfessionalGrowth #Innovation" : "#PengembanganDiri #Inovasi";
+    return limitCharacters(`${text}\n\n${closing}\n\n${hashtags}`, 3000);
+  }
+
+  if (platform === "x") {
+    let shortText;
+    if (english) {
+      shortText = contentMode === "caption"
+        ? (style === "formal" ? `✦ ${theme}: meaningful ideas; 💡 what's one step you'd take?` : `✨ ${theme}: one small step can change a lot 🚀; where would you start?`)
+        : (style === "formal" ? `${theme}: meaningful ideas. Real impact.` : `${theme}: small steps, big stories!`);
+    } else {
+      shortText = contentMode === "caption"
+        ? (style === "formal" ? `✦ ${theme}: gagasan bernilai; 💡 langkah apa yang paling berdampak?` : `✨ ${theme}: satu langkah kecil bisa mengubah banyak hal 🚀; kamu mulai dari mana?`)
+        : (style === "formal" ? `${theme}: gagasan bernilai, dampak nyata.` : `${theme}: langkah kecil, cerita besar!`);
+    }
+    return appendXDetails(shortText, details);
+  }
+
+  return text;
+}
+
+
+function generateCaption(theme, style, platform, details) {
+  const formal = style === "formal";
+  const bodies = language === "en"
+    ? (formal ? englishCaptionFormalBodies : englishCaptionInformalBodies)
+    : (formal ? captionFormalBodies : captionNonFormalBodies);
+  const closers = language === "en"
+    ? (formal ? englishCaptionFormalClosers : englishCaptionInformalClosers)
+    : (formal ? captionFormalClosers : captionNonFormalClosers);
+
+  const body = pick(bodies)(theme);
+  const polishedBody = body.charAt(0).toLocaleUpperCase(language === "en" ? "en" : "id") + body.slice(1);
+  const bodyWithEmoji = insertEmojiAtMiddle(polishedBody, formal ? "🌟" : "✨");
+  const closer = pick(closers);
+  const accent = formal ? "✦" : "✨";
+  const hook = language === "en"
+    ? (formal
+      ? `${theme} deserves a closer look; what could we discover together?`
+      : `Ever wondered what makes ${theme} worth talking about? ✨`)
+    : (formal
+      ? `${theme} layak dilihat lebih dekat; hal bermakna apa yang bisa kita temukan?`
+      : `Pernah kepikiran apa yang membuat ${theme} begitu menarik? ✨`);
+  const detailGuidance = getDetailGuidance(theme, style, details);
+  const reflection = details
+    ? detailGuidance
+    : (language === "en"
+      ? (formal
+        ? `The lasting value of ${theme} comes from how it connects with real needs, shared experiences, and thoughtful action.`
+        : `Sometimes the best part of ${theme} is the small, real-life story we get to share with each other.`)
+      : (formal
+        ? `Nilai ${theme} terasa semakin kuat saat terhubung dengan kebutuhan nyata, pengalaman bersama, dan langkah yang tepat.`
+        : `Kadang yang paling berkesan dari ${theme} justru cerita kecil dan pengalaman yang kita bagikan bareng.`));
+  const question = language === "en"
+    ? (formal
+      ? `Which part of ${theme} feels most relevant to you right now? Share your perspective below.`
+      : `What's the part of ${theme} you're most curious about? Tell us in the comments!`)
+    : (formal
+      ? `Menurut Anda, bagian mana dari ${theme} yang paling relevan saat ini? Mari berbagi perspektif.`
+      : `Kalau kamu, bagian mana dari ${theme} yang paling bikin penasaran? Ceritakan di komentar!`);
+  const callToAction = platform === "instagram"
+    ? (language === "en" ? "📌 Save this for later; share it with someone who might enjoy it." : "📌 Simpan untuk nanti; bagikan ke teman yang mungkin menyukainya.")
+    : platform === "facebook"
+      ? (language === "en" ? "↗ Share this post with someone who may relate." : "↗ Bagikan unggahan ini kepada teman yang punya pengalaman serupa.")
+      : platform === "linkedin"
+        ? (language === "en" ? "🤝 Turn the idea into action; connect with people working toward similar goals." : "🤝 Jadikan gagasan ini langkah nyata; terhubunglah dengan orang yang memiliki tujuan serupa.")
+        : "";
+  const caption = `${accent} ${hook}\n\n${bodyWithEmoji}\n\n${reflection}\n\n${question}${callToAction ? `\n\n${callToAction}` : ""}\n\n${accent} ${closer} ${accent}`;
+  return formatForPlatform(caption, theme, style, platform, "caption", details);
+
+}
+
+
+/* ==========================================
+   GENERATE TAGLINE
+========================================== */
+
+function generateTagline(theme, style, details) {
+
+  let tagline;
+  const templatesByGuidance = {
+    audience: 0,
+    benefit: 2,
+    action: 1,
+    mood: 3,
+    general: 4
+  };
+  const selectTemplate = templates => {
+    const cue = details ? inferDetailCues(details)[0] : "";
+    const index = templatesByGuidance[cue];
+    return (typeof index === "number" ? templates[index] : pick(templates))(theme);
+  };
+
+  if (language === "en") {
+    const templates = style === "formal"
+      ? englishTaglineFormalTemplates
+      : englishTaglineInformalTemplates;
+    tagline = selectTemplate(templates);
+  } else if (style === "formal") {
+    tagline = selectTemplate(taglineFormalTemplates);
+  } else {
+    tagline = selectTemplate(taglineNonFormalTemplates);
+  }
+
+  return tagline;
+
+}
+
+
+function generateBroadcast(theme, style, details) {
+  const detailGuidance = getDetailGuidance(theme, style, details);
+  const guidanceBlock = detailGuidance ? ` ${detailGuidance}` : "";
+
+  if (language === "en" && style === "formal") {
+    return `✦ *INFORMATION: ${theme.toUpperCase()}* ✦
+
+Hello! We would like to share a useful overview of ${theme}. ✨ Taking time to understand the topic can help us recognize relevant needs, compare options, and choose a thoughtful next step.
+
+*A few points to consider:*
+• Clarify what you would like to achieve with ${theme}.
+• Check information from reliable sources before making a decision.
+• Start with a practical action; 🔎 review what works and adjust when needed.
+
+Every situation is different, so choose an approach that fits your goals. Small, consistent steps can lead to meaningful progress.${guidanceBlock}
+
+📩 Reply to this message if you would like more information. Thank you for reading! ✦`;
+  }
+
+  if (language === "en") {
+    return `✨ *A little update about ${theme}!* ✨
+
+Hi! Here's something worth exploring: ${theme} can open up fresh ideas 🌱 and useful possibilities. Start by thinking about what you need, then look for a simple way to try it out.
+
+*Quick ideas to get started:*
+• Find a trusted source or someone with experience.
+• Pick one small action 🚀 you can take today.
+• Notice what works; build on it at your own pace.
+
+No need to get everything perfect on the first try. Keep learning, share what you discover, and make the process your own. 🌱${guidanceBlock}
+
+💬 Reply if you want to know more; happy to help!`;
+  }
+
+  if (style === "formal") {
+    return `✦ *INFORMASI: ${theme.toUpperCase()}* ✦
+
+Halo! Kami ingin berbagi informasi seputar ${theme}. ✨ Memahami topik ini dapat membantu kita mengenali kebutuhan, mempertimbangkan pilihan, dan menentukan langkah berikutnya dengan lebih terarah.
+
+*Beberapa hal yang dapat diperhatikan:*
+• Tentukan tujuan yang ingin dicapai terkait ${theme}.
+• Periksa informasi dari sumber tepercaya sebelum mengambil keputusan.
+• Mulai dari tindakan yang praktis; 🔎 evaluasi hasilnya dan sesuaikan bila diperlukan.
+
+Setiap situasi memiliki kebutuhan yang berbeda. Pilih pendekatan yang sesuai dengan tujuan Anda; langkah kecil yang konsisten dapat membawa perubahan berarti.${guidanceBlock}
+
+📩 Balas pesan ini jika Anda memerlukan informasi lebih lanjut. Terima kasih telah membaca! ✦`;
+  }
+
+  return `✨ *Ada kabar menarik tentang ${theme}!* ✨
+
+Hai! ${theme} bisa membuka ide baru 🌱 dan memberi banyak hal untuk dicoba. Yuk, mulai dengan mencari tahu apa yang paling kamu butuhkan; setelah itu, pilih satu langkah sederhana yang bisa dilakukan hari ini.
+
+*Ide cepat untuk memulai:*
+• Cari informasi dari sumber yang tepercaya.
+• Coba satu hal kecil dulu 🚀; tidak perlu langsung sempurna.
+• Lihat hasilnya, pelajari prosesnya, lalu lanjutkan dengan caramu sendiri.
+
+Setiap orang punya pengalaman yang berbeda. Nikmati prosesnya, bagikan hal baik yang kamu temukan, dan terus berkembang! 🌱${guidanceBlock}
+
+💬 Balas pesan ini kalau ingin tahu lebih lanjut; kami siap membantu!`;
+}
+
+
+/* ==========================================
+   UPDATE GENERATE BUTTON
+========================================== */
+
+function updateGenerateLabel() {
+
+  const button =
+    document.querySelector(
+      ".generate-button"
+    );
+
+
+  const labelKey = mode === "caption"
+    ? (writingStyle === "formal" ? "generateCaptionFormal" : "generateCaptionInformal")
+    : mode === "tagline"
+      ? (writingStyle === "formal" ? "generateTaglineFormal" : "generateTaglineInformal")
+      : (writingStyle === "formal" ? "generateBroadcastFormal" : "generateBroadcastInformal");
+  button.textContent = getText(labelKey);
+
+}
+
+
+const UI_TEXT = {
+  id: {
+    generatorNav: "Generator",
+    editorNav: "Editor",
+    editButton: "✎ Edit",
+    editorPageTitle: "Edit tulisan",
+    editorToolbarLabel: "Pemformatan teks",
+    editorSave: "Simpan perubahan",
+    editorCancel: "Batal",
+    editorSaved: "Perubahan tersimpan.",
+    editorEmpty: "Tulisan tidak boleh kosong.",
+    bookmarksNav: "🔖 Bookmark",
+    previewNav: "Pratinjau",
+    previewHeading: "Pratinjau visual",
+    previewNote: "Contoh tampilan sebelum dipublikasikan. Pratinjau ini tidak terhubung ke platform mana pun.",
+    previewDisclaimer: "Tampilan ini adalah mockup sederhana; desain akhir dapat berbeda di aplikasi/platform.",
+    previewKicker: "GAMBARAN AWAL",
+    previewArtFooter: "Sebuah ide untuk dibagikan",
+    previewSocialAccount: "Creative Studio · Pratinjau",
+    previewLinkedInMeta: "Contoh post profesional · 1 menit",
+    previewXMeta: "Pratinjau feed · sekarang",
+    previewMessageHeader: "Pesan · Pratinjau",
+    previewFollow: "Ikuti",
+    previewLikes: "Disukai komunitas",
+    previewLike: "Suka",
+    previewComment: "Komentar",
+    previewShare: "Bagikan",
+    previewReply: "Balas",
+    previewRepost: "Posting ulang",
+    bookmarkFilterLabel: "Pilih jenis bookmark",
+    status: "● Berjalan di perangkat ini",
+    introTitle: "Ruang ide kecilmu.",
+    introDescription: "Buat caption, tagline, atau pesan broadcast dari sebuah tema.",
+    generatorTitle: "Mulai membuat",
+    modeLabel: "Pilih jenis tulisan",
+    styleLabel: "Pilih gaya tulisan",
+    languageLabel: "Pilih bahasa",
+    platformLabel: "Pilih platform",
+    platformReferences: "Referensi resmi",
+    formattedFor: "Format untuk",
+    characterWord: "karakter",
+    weightedCharacterWord: "karakter berbobot",
+    platformGeneral: "Umum",
+    themeLabel: "Masukkan tema",
+    themePlaceholder: "Contoh: kopi pagi, teknologi, pendidikan...",
+    detailsLabel: "Detail tambahan (opsional)",
+    detailsPlaceholder: "Contoh: target audiens, manfaat utama, ajakan, atau suasana yang diinginkan.",
+    referencePanelLabel: "Referensi sumber (opsional)",
+    referenceLinksLabel: "Link postingan atau sumber (satu link per baris)",
+    referenceLinksPlaceholder: "Tempel link postingan sosial media, video, gambar, poster, atau template twibbon.",
+    referenceFilesLabel: "Gambar, video, poster, atau template",
+    referenceNotesLabel: "Poin penting dari referensi",
+    referenceNotesPlaceholder: "Ringkas audiens, manfaat, suasana, atau ajakan yang ingin dijadikan arahan.",
+    referenceHelper: "Tautan dan media tidak dibaca otomatis. Ringkas poin penting di sini agar dipakai sebagai arahan; isi ringkasan tidak akan disalin mentah ke hasil.",
+    removeReference: "Hapus referensi",
+    invalidReferenceLink: "Masukkan URL yang diawali http:// atau https://.",
+    resultHeading: "Hasil tulisan",
+    resultPlaceholder: "Hasil tulisan akan muncul di sini.",
+    bookmarkButton: "☆ Bookmark",
+    copyButton: "▢ Salin",
+    bookmarksHeading: "🔖 Bookmark tersimpan",
+    bookmarkEmpty: "Belum ada tulisan yang disimpan.",
+    pageFooter: "Creative Generator — buat ide, simpan, dan gunakan kembali.",
+    formal: "Formal",
+    informal: "Non-formal",
+    generateCaptionFormal: "✨ Buat Caption Formal",
+    generateCaptionInformal: "✨ Buat Caption Non-formal",
+    generateTaglineFormal: "✨ Buat Tagline Formal",
+    generateTaglineInformal: "✨ Buat Tagline Non-formal",
+    generateBroadcastFormal: "✨ Buat Broadcast Formal",
+    generateBroadcastInformal: "✨ Buat Broadcast Non-formal",
+    copied: "✓ Berhasil disalin",
+    copyFailed: "Gagal menyalin tulisan.",
+    saved: "✓ Tersimpan",
+    delete: "🗑 Hapus",
+    themePrefix: "Tema:",
+    choices: "pilihan",
+    savedReferences: "Referensi tersimpan",
+    referenceLinkLabel: "Tautan",
+    referenceFileLabel: "Berkas"
+  },
+  en: {
+    generatorNav: "Generator",
+    editorNav: "Editor",
+    editButton: "✎ Edit",
+    editorPageTitle: "Edit writing",
+    editorToolbarLabel: "Text formatting",
+    editorSave: "Save changes",
+    editorCancel: "Cancel",
+    editorSaved: "Changes saved.",
+    editorEmpty: "The writing cannot be empty.",
+    bookmarksNav: "🔖 Bookmarks",
+    previewNav: "Preview",
+    previewHeading: "Visual preview",
+    previewNote: "A sample layout before publishing. This preview is not connected to any platform.",
+    previewDisclaimer: "This is a simple mockup; the final appearance may differ in the platform app.",
+    previewKicker: "A FIRST LOOK",
+    previewArtFooter: "An idea worth sharing",
+    previewSocialAccount: "Creative Studio · Preview",
+    previewLinkedInMeta: "Professional post example · 1 min",
+    previewXMeta: "Feed preview · now",
+    previewMessageHeader: "Message · Preview",
+    previewFollow: "Follow",
+    previewLikes: "Liked by the community",
+    previewLike: "Like",
+    previewComment: "Comment",
+    previewShare: "Share",
+    previewReply: "Reply",
+    previewRepost: "Repost",
+    bookmarkFilterLabel: "Choose a bookmark type",
+    status: "● Running on this device",
+    introTitle: "A little space for ideas.",
+    introDescription: "Create a caption, tagline, or broadcast message from a theme.",
+    generatorTitle: "Create something",
+    modeLabel: "Choose a writing type",
+    styleLabel: "Choose a tone",
+    languageLabel: "Choose a language",
+    platformLabel: "Choose a platform",
+    platformReferences: "Official references",
+    formattedFor: "Formatted for",
+    characterWord: "characters",
+    weightedCharacterWord: "weighted characters",
+    platformGeneral: "General",
+    themeLabel: "Enter a theme",
+    themePlaceholder: "For example: morning coffee, technology, education...",
+    detailsLabel: "Additional details (optional)",
+    detailsPlaceholder: "For example: target audience, key benefit, call to action, or desired mood.",
+    referencePanelLabel: "Source references (optional)",
+    referenceLinksLabel: "Post or source links (one per line)",
+    referenceLinksPlaceholder: "Paste social post, video, image, poster, or template links.",
+    referenceFilesLabel: "Images, videos, posters, or templates",
+    referenceNotesLabel: "Key points from the references",
+    referenceNotesPlaceholder: "Summarize the audience, benefit, mood, or call to action to guide the writing.",
+    referenceHelper: "Links and media are not read automatically. Summarize key points here to guide the result; the note itself will not be copied into the writing.",
+    removeReference: "Remove reference",
+    invalidReferenceLink: "Enter a URL that starts with http:// or https://.",
+    resultHeading: "Your writing",
+    resultPlaceholder: "Your writing will appear here.",
+    bookmarkButton: "☆ Bookmark",
+    copyButton: "▢ Copy",
+    bookmarksHeading: "🔖 Saved bookmarks",
+    bookmarkEmpty: "You have not saved any writing yet.",
+    pageFooter: "Creative Generator — create, save, and reuse your ideas.",
+    formal: "Formal",
+    informal: "Informal",
+    generateCaptionFormal: "✨ Generate Formal Caption",
+    generateCaptionInformal: "✨ Generate Informal Caption",
+    generateTaglineFormal: "✨ Generate Formal Tagline",
+    generateTaglineInformal: "✨ Generate Informal Tagline",
+    generateBroadcastFormal: "✨ Generate Formal Broadcast",
+    generateBroadcastInformal: "✨ Generate Informal Broadcast",
+    copied: "✓ Copied",
+    copyFailed: "Could not copy the writing.",
+    saved: "✓ Saved",
+    delete: "🗑 Delete",
+    themePrefix: "Theme:",
+    choices: "saved",
+    savedReferences: "Saved references",
+    referenceLinkLabel: "Link",
+    referenceFileLabel: "Files"
+  }
+};
+
+
+function getText(key) {
+  return UI_TEXT[language][key];
+}
+
+
+function parseReferenceLinks() {
+  const lines = document.getElementById("reference-links").value.split(/\r?\n/);
+  const validLinks = [];
+  let hasInvalidLink = false;
+  lines.forEach(line => {
+    const candidate = line.trim();
+    if (!candidate) {
+      return;
+    }
+    try {
+      const parsed = new URL(candidate);
+      if (["http:", "https:"].includes(parsed.protocol) && !validLinks.includes(parsed.href)) {
+        validLinks.push(parsed.href);
+      }
+    } catch {
+      hasInvalidLink = true;
+    }
+  });
+  const status = document.getElementById("reference-link-status");
+  if (status) {
+    status.textContent = hasInvalidLink ? getText("invalidReferenceLink") : "";
+  }
+  return validLinks;
+}
+
+
+function renderReferenceLinks() {
+  const container = document.getElementById("reference-link-list");
+  if (!container) {
+    return;
+  }
+  container.replaceChildren();
+  parseReferenceLinks().forEach(url => {
+    const link = document.createElement("a");
+    link.href = url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = new URL(url).host;
+    link.title = url;
+    container.append(link);
+  });
+}
+
+
+function renderReferenceFiles() {
+  const container = document.getElementById("reference-file-list");
+  if (!container) {
+    return;
+  }
+  container.replaceChildren();
+
+  referenceFiles.forEach((entry, index) => {
+    const row = document.createElement("div");
+    row.className = "reference-file-item";
+    let mediaPreview;
+    if (entry.file.type.startsWith("image/")) {
+      mediaPreview = document.createElement("img");
+      mediaPreview.alt = entry.file.name;
+    } else {
+      mediaPreview = document.createElement("video");
+      mediaPreview.muted = true;
+      mediaPreview.preload = "metadata";
+      mediaPreview.setAttribute("aria-label", entry.file.name);
+    }
+    mediaPreview.className = "reference-preview";
+    mediaPreview.src = entry.url;
+
+    const fileName = document.createElement("span");
+    fileName.className = "reference-file-name";
+    fileName.textContent = entry.file.name;
+
+    const removeButton = document.createElement("button");
+    removeButton.className = "reference-remove";
+    removeButton.type = "button";
+    removeButton.textContent = "×";
+    removeButton.setAttribute("aria-label", `${getText("removeReference")}: ${entry.file.name}`);
+    removeButton.addEventListener("click", () => {
+      const [removed] = referenceFiles.splice(index, 1);
+      URL.revokeObjectURL(removed.url);
+      renderReferenceFiles();
+    });
+
+    row.append(mediaPreview, fileName, removeButton);
+    container.append(row);
+  });
+}
+
+
+function getPlatformName(platform) {
+  const names = {
+    instagram: "Instagram",
+    facebook: "Facebook",
+    linkedin: "LinkedIn",
+    x: "X"
+  };
+  return names[platform] || getText("platformGeneral");
+}
+
+
+function renderPreview() {
+  const stage = document.getElementById("preview-stage");
+  const theme = escapeHtml(currentTheme || getText("previewArtFooter"));
+  const textMarkup = currentResultMarkup
+    ? sanitizeEditorHtml(currentResultMarkup)
+    : escapeHtml(currentResult).replace(/\n/g, "<br>");
+  const accountHeader = (platform, meta) => `
+    <header class="preview-post-header">
+      <span class="preview-avatar ${platform}">${platform === "linkedin" ? "in" : platform === "x" ? "X" : "CS"}</span>
+      <span><span class="preview-account-name">${getText("previewSocialAccount")}</span><br><span class="preview-account-meta">${meta}</span></span>
+    </header>`;
+  const artPanel = platform => `
+    <div class="preview-art ${platform}">
+      <span class="preview-art-label">${getText("previewKicker")}</span>
+      <strong class="preview-art-theme">${theme}</strong>
+      <span class="preview-art-footer">${getText("previewArtFooter")}</span>
+    </div>`;
+  const copy = `<div class="preview-post-copy">${textMarkup}</div>`;
+
+  if (currentResultMode === "tagline") {
+    stage.innerHTML = `
+      <article class="preview-slogan-card">
+        <span class="preview-slogan-kicker">${getText("previewKicker")}</span>
+        <h2 class="preview-slogan-theme">${theme}</h2>
+        <p class="preview-slogan-copy">${textMarkup}</p>
+      </article>`;
+    return;
+  }
+
+  if (currentResultMode === "broadcast") {
+    stage.innerHTML = `
+      <article class="preview-message">
+        <header class="preview-message-header">${getText("previewMessageHeader")}</header>
+        <div class="preview-message-bubble">${textMarkup}</div>
+      </article>`;
+    return;
+  }
+
+  if (currentResultPlatform === "instagram") {
+    stage.innerHTML = `
+      <article class="preview-frame instagram">
+        <div class="preview-appbar instagram"><span>Instagram</span><span class="preview-appbar-actions">♡　⌕　▣</span></div>
+        ${accountHeader("instagram", "@creative.studio · 2 mnt")}
+        ${artPanel("instagram")}
+        <div class="preview-actions-row" aria-label="Aksi contoh"><span>♡　▢　↗</span><span>▣</span></div>
+        <div class="preview-engagement">${getText("previewLikes")}</div>
+        ${copy}
+      </article>`;
+  } else if (currentResultPlatform === "facebook") {
+    stage.innerHTML = `
+      <article class="preview-frame facebook">
+        <div class="preview-appbar facebook"><span>facebook</span><span class="preview-appbar-actions">⌕　☰</span></div>
+        ${accountHeader("facebook", "Creative Studio · 2 mnt")}
+        ${copy}
+        ${artPanel("facebook")}
+        <div class="preview-engagement">👍　${getText("previewLikes")}</div>
+        <div class="preview-reaction-row"><span>${getText("previewLike")}</span><span>${getText("previewComment")}</span><span>${getText("previewShare")}</span></div>
+      </article>`;
+  } else if (currentResultPlatform === "linkedin") {
+    stage.innerHTML = `
+      <article class="preview-frame linkedin">
+        <div class="preview-appbar linkedin"><span>LinkedIn</span><span class="preview-appbar-actions">⌕　▦　●</span></div>
+        <header class="preview-post-header linkedin-header">
+          <span class="preview-avatar linkedin">in</span>
+          <span><span class="preview-account-name">${getText("previewSocialAccount")}</span><br><span class="preview-account-meta">${getText("previewLinkedInMeta")}</span></span>
+          <button class="preview-follow" type="button">+ ${getText("previewFollow")}</button>
+        </header>
+        ${copy}
+        ${artPanel("linkedin")}
+        <div class="preview-engagement">👍　${getText("previewLikes")}</div>
+        <div class="preview-reaction-row"><span>${getText("previewLike")}</span><span>${getText("previewComment")}</span><span>${getText("previewRepost")}</span><span>${getText("previewShare")}</span></div>
+      </article>`;
+  } else {
+    stage.innerHTML = `
+      <article class="preview-frame x-post">
+        <div class="preview-appbar x"><span>𝕏</span><span class="preview-appbar-actions">⌕　⚙</span></div>
+        <header class="preview-post-header x-header">
+          <span class="preview-avatar x">X</span>
+          <span><span class="preview-account-name">${getText("previewSocialAccount")}</span><br><span class="preview-account-meta">@creative_studio · ${getText("previewXMeta")}</span></span>
+          <span class="preview-more">•••</span>
+        </header>
+        ${copy}
+        ${artPanel("x")}
+        <div class="preview-reaction-row"><span>${getText("previewReply")}</span><span>${getText("previewRepost")}</span><span>♡</span><span>${getText("previewShare")}</span></div>
+      </article>`;
+  }
+}
+
+
+function getPlatformSummary(platform, text) {
+  const platformName = getPlatformName(platform);
+  const numberFormat = new Intl.NumberFormat(language === "en" ? "en-US" : "id-ID");
+  const count = numberFormat.format(Array.from(text).length);
+
+  if (platform === "instagram") {
+    return `${platformName} · ${count}/${numberFormat.format(2200)} ${getText("characterWord")}`;
+  }
+  if (platform === "linkedin") {
+    return `${platformName} · ${count}/${numberFormat.format(3000)} ${getText("characterWord")}`;
+  }
+  if (platform === "x") {
+    const weightedCount = numberFormat.format(getXWeightedLength(text));
+    return `${platformName} · ${weightedCount}/${numberFormat.format(280)} ${getText("weightedCharacterWord")}`;
+  }
+  return `${platformName} · ${count} ${getText("characterWord")}`;
+}
+
+
+function setLanguage(newLanguage) {
+  language = newLanguage;
+  document.documentElement.lang = language;
+
+  const translatedIds = {
+    "generator-nav": "generatorNav",
+    "editor-nav": "editorNav",
+    "edit-button": "editButton",
+    "editor-page-title": "editorPageTitle",
+    "editor-save-top": "editorSave",
+    "editor-save": "editorSave",
+    "editor-cancel": "editorCancel",
+    "bookmarks-nav": "bookmarksNav",
+    "preview-nav": "previewNav",
+    "bookmarks-page-title": "bookmarksHeading",
+    "preview-heading": "previewHeading",
+    "preview-note": "previewNote",
+    "preview-disclaimer": "previewDisclaimer",
+    "bookmark-filter-label": "bookmarkFilterLabel",
+    "header-status": "status",
+    "intro-title": "introTitle",
+    "intro-description": "introDescription",
+    "generator-title": "generatorTitle",
+    "mode-label": "modeLabel",
+    "style-label": "styleLabel",
+    "language-label": "languageLabel",
+    "platform-label": "platformLabel",
+    "platform-references-title": "platformReferences",
+    "theme-label": "themeLabel",
+    "details-label": "detailsLabel",
+    "reference-panel-label": "referencePanelLabel",
+    "reference-links-label": "referenceLinksLabel",
+    "reference-files-label": "referenceFilesLabel",
+    "reference-notes-label": "referenceNotesLabel",
+    "result-heading": "resultHeading",
+    "result-placeholder": "resultPlaceholder",
+    "bookmark-button": "bookmarkButton",
+    "copy-button": "copyButton",
+    "bookmark-empty": "bookmarkEmpty",
+    "page-footer": "pageFooter"
+  };
+
+  Object.entries(translatedIds).forEach(([id, key]) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.textContent = getText(key);
+    }
+  });
+  document.getElementById("editor-toolbar").setAttribute("aria-label", getText("editorToolbarLabel"));
+
+  document.getElementById("theme").placeholder = getText("themePlaceholder");
+  document.getElementById("details").placeholder = getText("detailsPlaceholder");
+  document.getElementById("reference-links").placeholder = getText("referenceLinksPlaceholder");
+  document.getElementById("reference-notes").placeholder = getText("referenceNotesPlaceholder");
+  document.querySelectorAll("[data-language]").forEach(button => {
+    button.classList.toggle("active", button.dataset.language === language);
+  });
+  document.querySelector('[data-style="formal"]').textContent = getText("formal");
+  document.querySelector('[data-style="nonformal"]').textContent = getText("informal");
+  if (currentResult) {
+    const resultPlatform = document.getElementById("result-platform");
+    const showPlatform = mode === "caption" && currentResultMode === "caption";
+    resultPlatform.hidden = !showPlatform;
+    resultPlatform.textContent = showPlatform
+      ? getPlatformSummary(currentResultPlatform, currentResult)
+      : "";
+    if (!document.getElementById("preview-page").hidden) {
+      renderPreview();
+    }
+  }
+
+  updateGenerateLabel();
+  renderBookmarks();
+  renderReferenceLinks();
+  renderReferenceFiles();
+}
+
+
+function setPage(pageName) {
+  if ((pageName === "editor" || pageName === "preview") && !currentResult) {
+    return;
+  }
+
+  const pageIds = {
+    generator: "generator-page",
+    editor: "editor-page",
+    preview: "preview-page",
+    bookmarks: "bookmarks-page"
+  };
+  Object.entries(pageIds).forEach(([name, id]) => {
+    document.getElementById(id).hidden = name !== pageName;
+  });
+  document.querySelectorAll("[data-page]").forEach(button => {
+    const isActive = button.dataset.page === pageName;
+    button.classList.toggle("active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
+  });
+  if (pageName === "editor") {
+    loadEditorContent();
+  } else if (pageName === "preview") {
+    renderPreview();
+  } else if (pageName === "bookmarks") {
+    renderBookmarks();
+  }
+  window.scrollTo(0, 0);
+}
+
+
+function setBookmarkFilter(filterName) {
+  bookmarkFilter = filterName;
+  document.querySelectorAll("[data-bookmark-filter]").forEach(button => {
+    const isActive = button.dataset.bookmarkFilter === bookmarkFilter;
+    button.classList.toggle("active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
+  });
+  renderBookmarks();
+}
+
+
+/* ==========================================
+   SET MODE
+========================================== */
+
+function setMode(newMode) {
+
+  mode = newMode;
+
+  document.getElementById("platform-controls").hidden = newMode !== "caption";
+  document.getElementById("details-controls").hidden = newMode === "tagline";
+  const resultPlatform = document.getElementById("result-platform");
+  const showPlatform = newMode === "caption" && currentResultMode === "caption" && Boolean(currentResult);
+  resultPlatform.hidden = !showPlatform;
+  if (!showPlatform) {
+    resultPlatform.textContent = "";
+  }
+
+
+  document
+    .querySelectorAll(".mode-button")
+    .forEach(button => {
+
+      button.classList.toggle(
+        "active",
+        button.dataset.mode === newMode
+      );
+
+    });
+
+
+  updateGenerateLabel();
+
+}
+
+
+/* ==========================================
+   SET STYLE
+========================================== */
+
+function setStyle(newStyle) {
+
+  writingStyle = newStyle;
+
+
+  document
+    .querySelectorAll(".style-button")
+    .forEach(button => {
+
+      button.classList.toggle(
+        "active",
+        button.dataset.style === newStyle
+      );
+
+    });
+
+
+  updateGenerateLabel();
+
+}
+
+
+/* ==========================================
+   MODE BUTTON
+========================================== */
+
+document
+  .querySelectorAll(".mode-button")
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        setMode(
+          button.dataset.mode
+        );
+
+      }
+    );
+
+  });
+
+
+/* ==========================================
+   STYLE BUTTON
+========================================== */
+
+document
+  .querySelectorAll(".style-button")
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        setStyle(
+          button.dataset.style
+        );
+
+      }
+    );
+
+  });
+
+
+document
+  .querySelectorAll("[data-language]")
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => setLanguage(button.dataset.language)
+    );
+
+  });
+
+
+document
+  .querySelectorAll("[data-page]")
+  .forEach(button => {
+    button.addEventListener("click", () => setPage(button.dataset.page));
+  });
+
+
+document
+  .querySelectorAll("[data-bookmark-filter]")
+  .forEach(button => {
+    button.addEventListener("click", () => setBookmarkFilter(button.dataset.bookmarkFilter));
+  });
+
+
+document.getElementById("edit-button").addEventListener("click", () => setPage("editor"));
+document.getElementById("editor-cancel").addEventListener("click", () => setPage("generator"));
+document.getElementById("editor-save").addEventListener("click", saveEditorContent);
+document.getElementById("editor-save-top").addEventListener("click", saveEditorContent);
+document.addEventListener("selectionchange", rememberEditorSelection);
+document.getElementById("reference-links").addEventListener("input", renderReferenceLinks);
+document.getElementById("reference-files").addEventListener("change", event => {
+  [...event.target.files].forEach(file => {
+    if (!file.type.startsWith("image/") && !file.type.startsWith("video/")) {
+      return;
+    }
+    referenceFiles.push({ file, url: URL.createObjectURL(file) });
+  });
+  event.target.value = "";
+  renderReferenceFiles();
+});
+window.addEventListener("beforeunload", () => {
+  referenceFiles.forEach(entry => URL.revokeObjectURL(entry.url));
+});
+
+const editorToolbar = document.getElementById("editor-toolbar");
+editorToolbar.addEventListener("mousedown", event => {
+  if (event.target.closest("button")) {
+    rememberEditorSelection();
+    event.preventDefault();
+  }
+});
+editorToolbar.querySelectorAll("[data-editor-command]").forEach(control => {
+  const eventName = control.tagName === "BUTTON" ? "click" : "change";
+  control.addEventListener(eventName, () => {
+    runEditorCommand(control.dataset.editorCommand, control.value);
+  });
+});
+
+
+/* ==========================================
+   GENERATE
+========================================== */
+
+document
+  .getElementById("generator-form")
+  .addEventListener(
+    "submit",
+    function(event) {
+
+      event.preventDefault();
+
+
+      const theme =
+        document
+          .getElementById("theme")
+          .value
+          .trim();
+
+
+      if (!theme) {
+
+        return;
+
+      }
+
+
+      currentTheme = theme;
+      const detailText = mode === "tagline"
+        ? ""
+        : document.getElementById("details").value.trim();
+      const referenceNotes = document.getElementById("reference-notes").value.trim();
+      currentDetails = [detailText, referenceNotes].filter(Boolean).join(". ");
+      currentReferenceLinks = parseReferenceLinks();
+      currentReferenceFiles = referenceFiles.map(entry => entry.file.name);
+      currentResultPlatform = mode === "caption"
+        ? document.getElementById("platform").value
+        : "";
+      currentResultMode = mode;
+      currentResultStyle = writingStyle;
+      currentResultLanguage = language;
+      currentResultMarkup = "";
+
+
+      if (mode === "caption") {
+
+        currentResult =
+          generateCaption(
+            theme,
+            writingStyle,
+            currentResultPlatform,
+            currentDetails
+          );
+
+      } else if (mode === "tagline") {
+
+        currentResult =
+          generateTagline(
+            theme,
+            writingStyle,
+            currentDetails
+          );
+
+      } else {
+
+        currentResult =
+          generateBroadcast(
+            theme,
+            writingStyle,
+            currentDetails
+          );
+
+      }
+
+      renderCurrentResult();
+
+      const resultPlatform = document.getElementById("result-platform");
+      const showPlatform = mode === "caption";
+      resultPlatform.hidden = !showPlatform;
+      resultPlatform.textContent = showPlatform
+        ? getPlatformSummary(currentResultPlatform, currentResult)
+        : "";
+
+
+    }
+  );
+
+
+/* ==========================================
+   COPY
+========================================== */
+
+document
+  .getElementById("copy-button")
+  .addEventListener(
+    "click",
+    async function() {
+
+      if (!currentResult) {
+        return;
+      }
+
+
+      try {
+
+        if (currentResultMarkup && navigator.clipboard.write && typeof ClipboardItem !== "undefined") {
+          await navigator.clipboard.write([
+            new ClipboardItem({
+              "text/html": new Blob([sanitizeEditorHtml(currentResultMarkup)], { type: "text/html" }),
+              "text/plain": new Blob([currentResult], { type: "text/plain" })
+            })
+          ]);
+        } else {
+          await navigator.clipboard.writeText(currentResult);
+        }
+
+
+        this.textContent =
+          getText("copied");
+
+
+        setTimeout(
+          () => {
+
+            this.textContent = getText("copyButton");
+
+          },
+          1500
+        );
+
+      } catch (error) {
+
+        alert(
+          getText("copyFailed")
+        );
+
+      }
+
+    }
+  );
+
+
+/* ==========================================
+   LOCAL STORAGE
+========================================== */
+
+const BOOKMARK_KEY =
+  "creativeGeneratorBookmarks";
+
+
+function getBookmarks() {
+
+  try {
+
+    return JSON.parse(
+      localStorage.getItem(
+        BOOKMARK_KEY
+      )
+    ) || [];
+
+  } catch (error) {
+
+    return [];
+
+  }
+
+}
+
+
+function saveBookmarks(bookmarks) {
+
+  localStorage.setItem(
+    BOOKMARK_KEY,
+    JSON.stringify(bookmarks)
+  );
+
+}
+
+
+/* ==========================================
+   ADD BOOKMARK
+========================================== */
+
+function addBookmark() {
+
+  if (!currentResult || !currentTheme) {
+    return;
+  }
+
+
+  const bookmarks =
+    getBookmarks();
+
+
+  const newBookmark = {
+
+    id: Date.now(),
+
+    mode: currentResultMode,
+
+    style: currentResultStyle,
+
+    language: currentResultLanguage,
+
+    platform: currentResultPlatform,
+
+    theme: currentTheme,
+
+    details: currentDetails,
+
+    referenceLinks: currentReferenceLinks,
+
+    referenceFiles: currentReferenceFiles,
+
+    text: currentResult,
+
+    html: currentResultMarkup
+
+  };
+
+
+  bookmarks.unshift(
+    newBookmark
+  );
+
+
+  saveBookmarks(
+    bookmarks
+  );
+
+
+  renderBookmarks();
+
+
+  const button =
+    document.getElementById(
+      "bookmark-button"
+    );
+
+
+  button.textContent =
+    getText("saved");
+
+
+  setTimeout(
+    () => {
+
+      button.textContent =
+        getText("bookmarkButton");
+
+    },
+    1200
+  );
+
+}
+
+
+/* ==========================================
+   DELETE BOOKMARK
+========================================== */
+
+function deleteBookmark(id) {
+
+  let bookmarks =
+    getBookmarks();
+
+
+  bookmarks =
+    bookmarks.filter(
+      bookmark =>
+        bookmark.id !== id
+    );
+
+
+  saveBookmarks(
+    bookmarks
+  );
+
+
+  renderBookmarks();
+
+}
+
+
+/* ==========================================
+   ESCAPE HTML
+========================================== */
+
+function escapeHtml(text) {
+
+  return text
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+
+}
+
+
+function sanitizeEditorHtml(html) {
+  const parsed = new DOMParser().parseFromString(html, "text/html");
+  const allowedTags = new Set(["b", "strong", "i", "em", "u", "s", "del", "span", "div", "p", "br", "ul", "ol", "li", "h1", "h2", "h3", "blockquote", "font"]);
+  const blockedTags = new Set(["script", "style", "iframe", "object", "embed", "svg", "math"]);
+  const sizeMap = {"1":"10px", "2":"13px", "3":"16px", "4":"18px", "5":"24px", "6":"32px", "7":"48px"};
+
+  function cleanNode(node) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      return escapeHtml(node.nodeValue);
+    }
+    if (node.nodeType !== Node.ELEMENT_NODE) {
+      return "";
+    }
+
+    const tag = node.tagName.toLowerCase();
+    if (blockedTags.has(tag)) {
+      return "";
+    }
+
+    const children = [...node.childNodes].map(cleanNode).join("");
+    if (!allowedTags.has(tag)) {
+      return children;
+    }
+    if (tag === "br") {
+      return "<br>";
+    }
+
+    const styleRules = [];
+    const fontFamily = (node.style.fontFamily || node.getAttribute("face") || "").replace(/["']/g, "").split(",")[0].trim();
+    const safeFamilies = ["Arial", "Georgia", "Times New Roman", "Verdana", "Trebuchet MS", "Courier New"];
+    if (safeFamilies.some(family => family.toLowerCase() === fontFamily.toLowerCase())) {
+      styleRules.push(`font-family: ${fontFamily}`);
+    }
+
+    let fontSize = node.style.fontSize;
+    if (!fontSize && node.getAttribute("size")) {
+      fontSize = sizeMap[node.getAttribute("size")];
+    }
+    if (/^(8|9|[1-6]\d|72)px$/.test(fontSize)) {
+      styleRules.push(`font-size: ${fontSize}`);
+    }
+
+    const color = node.style.color || node.getAttribute("color") || "";
+    const backgroundColor = node.style.backgroundColor || "";
+    const safeColor = value => /^#[\da-f]{3}(?:[\da-f]{3})?(?:[\da-f]{2})?$/i.test(value) || /^rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)$/i.test(value);
+    if (safeColor(color)) {
+      styleRules.push(`color: ${color}`);
+    }
+    if (safeColor(backgroundColor)) {
+      styleRules.push(`background-color: ${backgroundColor}`);
+    }
+
+    const textAlign = node.style.textAlign;
+    if (["left", "center", "right", "justify"].includes(textAlign)) {
+      styleRules.push(`text-align: ${textAlign}`);
+    }
+
+    const fontWeight = node.style.fontWeight;
+    if (["normal", "bold", "400", "700"].includes(fontWeight)) {
+      styleRules.push(`font-weight: ${fontWeight}`);
+    }
+    const fontStyle = node.style.fontStyle;
+    if (["normal", "italic", "oblique"].includes(fontStyle)) {
+      styleRules.push(`font-style: ${fontStyle}`);
+    }
+
+    const outputTag = tag === "font" ? "span" : tag;
+    const styleAttribute = styleRules.length
+      ? ` style="${escapeHtml(styleRules.join("; "))}"`
+      : "";
+    return `<${outputTag}${styleAttribute}>${children}</${outputTag}>`;
+  }
+
+  return [...parsed.body.childNodes].map(cleanNode).join("");
+}
+
+
+function editorHtmlToText(html) {
+  const container = document.createElement("div");
+  container.style.position = "fixed";
+  container.style.left = "-10000px";
+  container.style.whiteSpace = "pre-wrap";
+  container.innerHTML = sanitizeEditorHtml(html);
+  document.body.append(container);
+  const text = container.innerText;
+  container.remove();
+  return text.replace(/\r/g, "").replace(/\n{3,}/g, "\n\n").trim();
+}
+
+
+function renderCurrentResult() {
+  const resultContent = currentResultMarkup
+    ? sanitizeEditorHtml(currentResultMarkup)
+    : escapeHtml(currentResult).replace(/\n/g, "<br>");
+  const resultBox = document.getElementById("result-box");
+  resultBox.innerHTML = `<div class="result-text">${resultContent}</div>`;
+  resultBox.classList.remove("empty");
+  document.getElementById("copy-button").disabled = !currentResult;
+  document.getElementById("bookmark-button").disabled = !currentResult;
+  document.getElementById("preview-nav").disabled = !currentResult;
+  document.getElementById("edit-button").disabled = !currentResult;
+  document.getElementById("editor-nav").disabled = !currentResult;
+}
+
+
+function loadEditorContent() {
+  const editor = document.getElementById("rich-editor");
+  editor.innerHTML = currentResultMarkup
+    ? sanitizeEditorHtml(currentResultMarkup)
+    : escapeHtml(currentResult).replace(/\n/g, "<br>");
+  document.getElementById("editor-status").textContent = "";
+  savedEditorRange = null;
+}
+
+
+function saveEditorContent() {
+  const safeMarkup = sanitizeEditorHtml(document.getElementById("rich-editor").innerHTML);
+  const plainText = editorHtmlToText(safeMarkup);
+  if (!plainText) {
+    document.getElementById("editor-status").textContent = getText("editorEmpty");
+    return;
+  }
+
+  currentResultMarkup = safeMarkup;
+  currentResult = plainText;
+  renderCurrentResult();
+  setPage("generator");
+}
+
+
+function rememberEditorSelection() {
+  const editor = document.getElementById("rich-editor");
+  const selection = window.getSelection();
+  if (selection && selection.rangeCount && editor.contains(selection.anchorNode)) {
+    savedEditorRange = selection.getRangeAt(0).cloneRange();
+  }
+}
+
+
+function runEditorCommand(command, value) {
+  const editor = document.getElementById("rich-editor");
+  editor.focus();
+  const selection = window.getSelection();
+  if (selection && savedEditorRange && editor.contains(savedEditorRange.commonAncestorContainer)) {
+    selection.removeAllRanges();
+    selection.addRange(savedEditorRange);
+  }
+  document.execCommand(command, false, value || null);
+  rememberEditorSelection();
+}
+
+
+/* ==========================================
+   RENDER BOOKMARK
+========================================== */
+
+function renderBookmarks() {
+
+  const list =
+    document.getElementById(
+      "bookmark-list"
+    );
+
+
+  const count =
+    document.getElementById(
+      "bookmark-count"
+    );
+
+
+  const allBookmarks =
+    getBookmarks();
+
+
+  const modeLabels = {
+    caption: "Caption",
+    tagline: "Tagline",
+    broadcast: "Broadcast"
+  };
+  const counts = {
+    caption: allBookmarks.filter(bookmark => (bookmark.mode || "caption") === "caption").length,
+    tagline: allBookmarks.filter(bookmark => bookmark.mode === "tagline").length,
+    broadcast: allBookmarks.filter(bookmark => bookmark.mode === "broadcast").length
+  };
+  Object.entries(counts).forEach(([modeName, total]) => {
+    document.getElementById(`bookmark-count-${modeName}`).textContent = total;
+  });
+
+  const bookmarks = allBookmarks.filter(bookmark => (bookmark.mode || "caption") === bookmarkFilter);
+  count.textContent = `${bookmarks.length} ${getText("choices")}`;
+  document.getElementById("bookmark-filter-title").textContent = modeLabels[bookmarkFilter];
+
+
+  if (bookmarks.length === 0) {
+
+    list.innerHTML = `
+      <div class="bookmark-empty" id="bookmark-empty">
+        ${getText("bookmarkEmpty")}
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  list.innerHTML =
+    bookmarks
+      .map(bookmark => {
+
+        const modeText = {
+          caption: "Caption",
+          tagline: "Tagline",
+          broadcast: "Broadcast"
+        }[bookmark.mode] || "Caption";
+
+
+        const styleText =
+          bookmark.style === "formal"
+            ? getText("formal")
+            : getText("informal");
+
+        const languageText = bookmark.language === "en"
+          ? "English"
+          : "Bahasa Indonesia";
+
+        const platformTag = bookmark.platform
+          ? `<span class="bookmark-tag">${getPlatformName(bookmark.platform)}</span>`
+          : "";
+        const savedReferences = [
+          ...(bookmark.referenceLinks || []).map((url, index) => `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${getText("referenceLinkLabel")} ${index + 1}</a>`),
+          ...(bookmark.referenceFiles || []).map(name => `<span>${getText("referenceFileLabel")}: ${escapeHtml(name)}</span>`)
+        ];
+        const referencesMarkup = savedReferences.length
+          ? `<div class="bookmark-references"><strong>${getText("savedReferences")}</strong>${savedReferences.join("")}</div>`
+          : "";
+
+
+        return `
+
+          <div class="bookmark-item">
+
+            <div class="bookmark-top">
+
+              <div class="bookmark-info">
+
+                <span class="bookmark-tag">
+                  ${modeText}
+                </span>
+
+                <span class="bookmark-tag">
+                  ${styleText}
+                </span>
+
+                <span class="bookmark-tag">
+                  ${languageText}
+                </span>
+
+                ${platformTag}
+
+              </div>
+
+
+              <button
+                class="delete-bookmark"
+                onclick="deleteBookmark(${bookmark.id})">
+
+                ${getText("delete")}
+
+              </button>
+
+            </div>
+
+
+            <div class="bookmark-theme">
+
+              ${getText("themePrefix")}
+              ${escapeHtml(bookmark.theme)}
+
+            </div>
+
+
+            <div class="bookmark-content">
+
+              ${bookmark.html ? sanitizeEditorHtml(bookmark.html) : escapeHtml(bookmark.text)}
+
+            </div>
+
+            ${referencesMarkup}
+
+          </div>
+
+        `;
+
+      })
+      .join("");
+
+}
+
+
+/* ==========================================
+   BOOKMARK BUTTON
+========================================== */
+
+document
+  .getElementById("bookmark-button")
+  .addEventListener(
+    "click",
+    addBookmark
+  );
+
+
+/* ==========================================
+   INITIAL
+========================================== */
+
+renderBookmarks();
+
+setMode("caption");
+
+setStyle("formal");
+
+setLanguage("id");
+
+</script>
+
+</body>
+</html>

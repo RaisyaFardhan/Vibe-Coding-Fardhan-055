@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f6f3ec">
+  <title>Creative Generator</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f6f3ec;
+      --surface: #fffdf8;
+      --ink: #242a27;
+      --muted: #6c736d;
+      --line: #deded3;
+      --green: #246b52;
+      --green-dark: #174a39;
+      --coral: #dc684f;
+      --yellow: #f0c56b;
+      --shadow: 0 14px 40px rgb(42 52 44 / 8%);
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background-color: var(--paper);
+      background-image: radial-gradient(#d9d8cc 0.7px, transparent 0.7px);
+      background-size: 18px 18px;
+      color: var(--ink);
+    }
+
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+
+    .topbar {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 0 clamp(20px, 6vw, 84px);
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 34px;
+      aspect-ratio: 1;
+      place-items: center;
+      border-radius: 10px;
+      background: var(--green);
+      color: white;
+      font-size: 18px;
+    }
+
+    .local-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .local-badge::before {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #3a9b72;
+      content: "";
+    }
+
+    main {
+      width: min(1080px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: clamp(32px, 7vh, 68px) 0 56px;
+    }
+
+    .intro {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--coral);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 600px;
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(34px, 5vw, 54px);
+      font-weight: 500;
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .intro-note {
+      max-width: 235px;
+      margin: 0 0 4px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(260px, 0.78fr) minmax(0, 1.22fr);
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .controls {
+      padding: clamp(22px, 4vw, 38px);
+      border-right: 1px solid var(--line);
+    }
+
+    .mode-label, .field-label {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .mode-switch {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      margin-bottom: 32px;
+      padding: 4px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #f2f1ea;
+    }
+
+    .mode-button {
+      min-height: 42px;
+      border: 0;
+      border-radius: 4px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .mode-button[aria-pressed="true"] {
+      background: var(--surface);
+      color: var(--green-dark);
+      box-shadow: 0 1px 4px rgb(35 44 38 / 12%);
+    }
+
+    .field-label { margin-bottom: 9px; color: var(--ink); }
+
+    .theme-input {
+      width: 100%;
+      min-height: 48px;
+      padding: 0 13px;
+      border: 1px solid #c9cec4;
+      border-radius: 5px;
+      outline: none;
+      background: #fff;
+      color: var(--ink);
+      font-size: 14px;
+    }
+
+    .theme-input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgb(36 107 82 / 12%); }
+    .theme-input::placeholder { color: #969c95; }
+
+    .hint {
+      min-height: 36px;
+      margin: 8px 0 22px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .generate-button {
+      display: inline-flex;
+      width: 100%;
+      min-height: 48px;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      border: 0;
+      border-radius: 5px;
+      background: var(--green);
+      color: white;
+      font-size: 14px;
+      font-weight: 800;
+      transition: background 140ms ease, transform 140ms ease;
+    }
+
+    .generate-button:hover { transform: translateY(-1px); background: var(--green-dark); }
+    .generate-button:active { transform: translateY(0); }
+
+    .result {
+      display: flex;
+      min-height: 430px;
+      flex-direction: column;
+      padding: clamp(22px, 4vw, 38px);
+      background: #fbfaf4;
+    }
+
+    .result-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .result-title {
+      margin: 0;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    .copy-button {
+      display: inline-flex;
+      min-height: 36px;
+      align-items: center;
+      gap: 7px;
+      padding: 0 10px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      background: var(--surface);
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .copy-button:hover:not(:disabled) { border-color: var(--green); color: var(--green-dark); }
+    .copy-button:disabled { cursor: not-allowed; opacity: 0.45; }
+
+    .result-content {
+      flex: 1;
+      padding: 28px 4px;
+      color: #434b45;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 17px;
+      line-height: 1.8;
+      white-space: pre-wrap;
+    }
+
+    .result-content.empty {
+      display: grid;
+      place-items: center;
+      color: #8a9188;
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .result-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .result-footer strong { color: var(--green); font-weight: 700; }
+    .toast { min-height: 16px; color: var(--green-dark); }
+
+    button:focus-visible { outline: 3px solid var(--yellow); outline-offset: 2px; }
+
+    @media (max-width: 700px) {
+      .topbar { min-height: 62px; padding-inline: 20px; }
+      main { width: min(100% - 28px, 540px); padding-top: 36px; }
+      .intro { align-items: start; flex-direction: column; gap: 12px; margin-bottom: 22px; }
+      .intro-note { max-width: 360px; }
+      .workspace { grid-template-columns: 1fr; }
+      .controls { border-right: 0; border-bottom: 1px solid var(--line); }
+      .mode-switch { margin-bottom: 24px; }
+      .result { min-height: 300px; }
+    }
+
+    @media (max-width: 380px) {
+      .local-badge { font-size: 0; }
+      .local-badge::before { width: 9px; height: 9px; }
+      .result-header { align-items: start; }
+      .copy-button { min-height: 34px; padding-inline: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">✦</span> Creative Generator</div>
+    <span class="local-badge">Berjalan di perangkat ini</span>
+  </header>
+
+  <main>
+    <section class="intro" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">Ruang ide kecilmu</p>
+        <h1 id="page-title">Kata yang tinggal diingat.</h1>
+      </div>
+      <p class="intro-note">Masukkan satu tema. Temukan kalimat yang pas untuk cerita berikutnya.</p>
+    </section>
+
+    <section class="workspace" aria-label="Generator caption dan tagline">
+      <form class="controls" id="generator-form">
+        <span class="mode-label" id="mode-label">Pilih jenis tulisan</span>
+        <div class="mode-switch" role="group" aria-labelledby="mode-label">
+          <button class="mode-button" type="button" data-mode="caption" aria-pressed="true">Caption</button>
+          <button class="mode-button" type="button" data-mode="tagline" aria-pressed="false">Tagline</button>
+        </div>
+
+        <label class="field-label" for="theme-input">Tema tulisan</label>
+        <input class="theme-input" id="theme-input" name="theme" type="text" maxlength="80" placeholder="Contoh: kopi pagi" autocomplete="off" required>
+        <p class="hint" id="mode-hint">Caption lebih panjang untuk menghidupkan sebuah momen.</p>
+        <button class="generate-button" type="submit"><span aria-hidden="true">✦</span><span id="generate-label">Buat caption</span></button>
+      </form>
+
+      <section class="result" aria-labelledby="result-title">
+        <div class="result-header">
+          <h2 class="result-title" id="result-title">Hasil caption</h2>
+          <button class="copy-button" id="copy-button" type="button" disabled><span aria-hidden="true">▢</span> Salin</button>
+        </div>
+        <div class="result-content empty" id="result-content" aria-live="polite">Hasil tulisanmu akan muncul di sini.</div>
+        <div class="result-footer"><span id="result-kind">Belum ada hasil</span><strong class="toast" id="toast" role="status"></strong></div>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    const form = document.querySelector("#generator-form");
+    const themeInput = document.querySelector("#theme-input");
+    const resultContent = document.querySelector("#result-content");
+    const copyButton = document.querySelector("#copy-button");
+    const toast = document.querySelector("#toast");
+    const modeHint = document.querySelector("#mode-hint");
+    const resultTitle = document.querySelector("#result-title");
+    const resultKind = document.querySelector("#result-kind");
+    const generateLabel = document.querySelector("#generate-label");
+    const modeButtons = [...document.querySelectorAll(".mode-button")];
+    let mode = "caption";
+    let currentResult = "";
+
+    function setMode(nextMode) {
+      mode = nextMode;
+      const isCaption = mode === "caption";
+      modeButtons.forEach((button) => {
+        button.setAttribute("aria-pressed", String(button.dataset.mode === mode));
+      });
+      modeHint.textContent = isCaption
+        ? "Caption lebih panjang untuk menghidupkan sebuah momen."
+        : "Tagline singkat yang mudah diingat dan cocok untuk sebuah ide.";
+      resultTitle.textContent = isCaption ? "Hasil caption" : "Hasil tagline";
+      generateLabel.textContent = isCaption ? "Buat caption" : "Buat tagline";
+      if (currentResult) resultKind.textContent = isCaption ? "Caption siap digunakan" : "Tagline siap digunakan";
+      toast.textContent = "";
+    }
+
+    modeButtons.forEach((button) => {
+      button.addEventListener("click", () => setMode(button.dataset.mode));
+    });
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const theme = themeInput.value.trim();
+      if (!theme) {
+        themeInput.setCustomValidity("Masukkan tema terlebih dahulu.");
+        themeInput.reportValidity();
+        themeInput.addEventListener("input", () => themeInput.setCustomValidity(""), { once: true });
+        return;
+      }
+
+      try {
+        const response = await fetch("/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ theme, mode })
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.error || "Terjadi kesalahan.");
+        }
+
+        currentResult = data.text;
+        resultContent.textContent = currentResult;
+        resultContent.classList.remove("empty");
+        copyButton.disabled = false;
+        resultKind.textContent = mode === "caption" ? "Caption siap digunakan" : "Tagline siap digunakan";
+        toast.textContent = "";
+      } catch (error) {
+        resultContent.textContent = error.message;
+        resultContent.classList.add("empty");
+        copyButton.disabled = true;
+      }
+    });
+
+    async function copyResult() {
+      if (!currentResult) return;
+      try {
+        await navigator.clipboard.writeText(currentResult);
+      } catch {
+        const temporary = document.createElement("textarea");
+        temporary.value = currentResult;
+        temporary.setAttribute("readonly", "");
+        temporary.style.position = "fixed";
+        temporary.style.opacity = "0";
+        document.body.append(temporary);
+        temporary.select();
+        document.execCommand("copy");
+        temporary.remove();
+      }
+      toast.textContent = "Tersalin";
+      window.setTimeout(() => { toast.textContent = ""; }, 1800);
+    }
+
+    copyButton.addEventListener("click", copyResult);
+  </script>
+</body>
+</html>

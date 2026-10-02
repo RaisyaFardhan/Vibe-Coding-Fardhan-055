@@ -1,0 +1,11 @@
+#loop for
+listA = [1,2,3,4,5]
+listB = []
+listC = []
+masukan = int(input("masukan angka/nilai"   ))
+listB.append(masukan)
+for i in listA:
+        for j in listB:
+            listC.append(i*j)
+
+print(listC)

@@ -1,0 +1,25 @@
+#membuat jam tidur, jam kerja, jam santai pada hari kerja, jam santai pada akhir pekan
+
+jamTidur = float(input("masukan jam tidur per hari "   ))
+JamKerja = float(input("masukan jam kerja per hari "  ))
+JamSantaiHariKerja = float(input("masukan jam santai pada hari kerja " ))
+JamSantaiAkhirPekan = float(input("masukan jam santai pada akhir pekan "))
+
+
+#kalkulasi jam kerja tersedia pada hari kerja (24 - jam tidur - jam kerja - jam santai pada hari kerja - 3)
+JamTersediaHariKerja = 24 - jamTidur - JamKerja - JamSantaiHariKerja - 3
+
+
+#Kalkulasi jam tersedia pada akhir pekan (24 jam - jam tidur - jam santai pada akhir pekan - 3)
+JamTersediaAkhirPekan = 24 - jamTidur - JamSantaiAkhirPekan - 3
+
+
+#kalkulasi total jam kerja tersedia per minggu (5 * jam kerja tersedia pada hari kerja + 2 * jam tersedia pada akhir pekan)
+TotalJamTersedia = (5 * JamTersediaHariKerja) + (2 * JamTersediaAkhirPekan)
+
+#cetakn informasi jam kerj tersedia pasa hari kerja, akhir pekan , dan total perminggu 
+print("Jam kerja tersedia pada hari kerja adalah: ", JamTersediaHariKerja)
+print("Jam kerja tersedia pada akhir pekan adalah: ", JamTersediaAkhirPekan)
+print("Total jam kerja tersedia per minggu adalah: ", TotalJamTersedia) 
+
+

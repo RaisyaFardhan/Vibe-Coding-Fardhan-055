@@ -1,0 +1,14 @@
+nilai =int(input("masukan nilai kamu:"))
+
+if nilai >100:
+    print("eror")
+elif nilai ==100:
+    print("wow, nilai kamu sempurna. SELAMAT!")
+elif nilai >=85:
+    print("bagus bagus, pertahankan dan terus kembangkan!")
+elif nilai >=70:
+    print("okelah cukup, tapi harus dikembangin lagi")
+else:
+    print("tolong belajar lebih rajin")
+
+

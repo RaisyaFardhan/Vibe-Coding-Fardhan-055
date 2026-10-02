@@ -1,0 +1,24 @@
+makanan = ["ayam", "soto", "bakso",3]
+
+#Menambahkan makanan
+makanan.append("bebek goreng")
+
+print(makanan)
+
+#Mengganti makanan
+makanan[0] = "geprek bakar"
+
+print(makanan)
+
+#Mengurangi list makanan
+makanan.remove("bakso")
+
+#mengurangi juga cuma pake INDEKS 01234567 DST...
+makanan.remove(makanan[0])
+
+print(makanan)
+
+#Menghapus semua list makanan
+makanan.clear()
+
+print(makanan)
